@@ -2,17 +2,14 @@
 # 코스요리를 구성하는 단품메뉴들의 갯수가 담긴 배열 course가 매개변수로 주어질 때,
 # "스카피"가 새로 추가하게 될 코스요리의 메뉴 구성을
 # 문자열 형태로 배열에 담아 return 하도록 solution 함수를 완성해 주세요.
+# orders 배열의 각 원소는 크기가 2 이상 10 이하인 문자열입니다.
 
 
 def solution(orders, course):
-    # orders 배열의 각 원소는 크기가 2 이상 10 이하인 문자열입니다.
-
-    # orders 를 하나하나 쪼개고
-
-    # 정답은 각 코스요리 메뉴의 구성을 문자열 형식으로 배열에 담아 사전 순으로 오름차순 정렬해서 return 해주세요.
     answer = []
     return answer
 
+##################################################################################################
 
 orders = ["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"]
 course = [2, 3, 4]
@@ -38,24 +35,27 @@ courseList = []
 visited = [False] * len(kindsOfMenu)
 
 
-def dfs(depth):
-    if depth == m:
-        printList.sort()
-        if not printList in courseList:
-            courseList.append(printList)
-            return
-        else:
-            return
+def dfs(depth, courseList):
+    if depth == m:        
+        courseList.append(tuple(printList))
+        return
+
     for i in range(len(kindsOfMenu)):  # 0~7
         if not visited[i]:
             visited[i] = True
             printList.append(kindsOfMenu[i])
-            dfs(depth + 1)
+            dfs(depth + 1, courseList)
             visited[i] = False
             printList.pop()
 
 
-dfs(0)
+dfs(0, courseList)
+
+# tuple을 list 화 시키기
+courseList = [list(item) for item in courseList]
+
+
 print(courseList)
+
 
 # solution(orders, course)

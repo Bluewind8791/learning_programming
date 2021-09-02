@@ -13,22 +13,29 @@
 # 값이 0이면서 방문하지 않았다면 방문
 
 
-def dfs(graph, start, visited, depth):
-    if depth == depth:
-        return
-    visited[start] = True
+def dfs(graph, y, x):
+    if y < 0 or y >= N or x < 0 or x >= M:
+        return False
 
-    for i in graph[start]:
-        if not visited[i]:
-            dfs(graph, i, visited, depth + 1)
+    if graph[y][x] == 0:
+        graph[y][x] = 1
+        dfs(graph, y - 1, x)
+        dfs(graph, y, x - 1)
+        dfs(graph, y + 1, x)
+        dfs(graph, y, x + 1)
+        return True
+    return False
 
 
 graph = [[0, 0, 1, 1, 0], [0, 0, 0, 1, 1], [1, 1, 1, 1, 1], [0, 0, 0, 0, 0]]
 
 N = 4
 M = 5
+result = 0
 
-visited = [False] * (M)
-depth = N
+for i in range(N):
+    for j in range(M):
+        if dfs(graph, i, j):
+            result += 1
 
-dfs(graph, 1, visited, depth)
+print(result)

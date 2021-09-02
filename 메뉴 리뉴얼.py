@@ -28,10 +28,34 @@ for i in range(len(orders)):
         if not orders[i][j] in kindsOfMenu:
             kindsOfMenu.append(orders[i][j])
 
-kindsOfMenu.sort()
-print(kindsOfMenu)
+kindsOfMenu.sort()  # ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
 # kindsOfMenu의 경우의 수 중 course의 가짓수 찾기
 # 탐색 알고리즘
+m = 2  # course[0]
+printList = []
+courseList = []
+visited = [False] * len(kindsOfMenu)
+
+
+def dfs(depth):
+    if depth == m:
+        printList.sort()
+        if not printList in courseList:
+            courseList.append(printList)
+            return
+        else:
+            return
+    for i in range(len(kindsOfMenu)):  # 0~7
+        if not visited[i]:
+            visited[i] = True
+            printList.append(kindsOfMenu[i])
+            dfs(depth + 1)
+            visited[i] = False
+            printList.pop()
+
+
+dfs(0)
+print(courseList)
 
 # solution(orders, course)

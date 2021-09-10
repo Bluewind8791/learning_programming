@@ -32,7 +32,7 @@ print(array)
 
 
 # quick sorting
-#
+# quick sorting 의 시간복잡도는 O(NlogN)
 
 array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
 
@@ -69,3 +69,59 @@ def quick_sort(array, start, end):
 
 quick_sort(array, 0, len(array) - 1)
 print(array)
+
+
+# - 파이썬의 장점을 살린 quick sorting -
+
+array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
+
+
+def py_quick_sort(array):
+    # list가 1개 이하일 경우 return
+    if len(array) <= 1:
+        return array
+
+    pivot = array[0]
+    tail = array[1:]
+
+    left_side = [x for x in tail if x <= pivot]  # tail 중 pivot 이하 > 분할 > left side
+    right_side = [x for x in tail if x > pivot]  # tail 중 pivot 초과 > 분할 > right side
+
+    # 분할 이후 왼쪽 오른쪽 부분 각각 재귀수행 및 전체 리스트 return
+    return py_quick_sort(left_side) + [pivot] + py_quick_sort(right_side)
+
+
+print(py_quick_sort(array))
+
+
+# - Count Sorting - 계수 정렬
+# 특정한 조건이 부합되어야 사용 가능하지만 매우 빠름
+# 데이터의 크기 범위가 제한되어 정수형태로 표현할 수 있을때 사용가능
+# 시간복잡도 O(N + K)
+
+array = [7, 5, 9, 0, 3, 1, 6, 2, 9, 1, 4, 8, 0, 5, 2]
+
+# 모든 범위를 포함하는 리스트 선언 (초기값 0)
+count = [0] * (max(array) + 1)
+
+for i in range(len(array)):
+    count[array[i]] += 1  # 리스트의 인덱스에 기반하여 값 증가
+
+# list 출력
+for i in range(len(count)):
+    for j in range(count[i]):
+        print(i, end=" ")
+
+
+# - python sorting -
+
+array = [("banana", 2), ("apple", 5), ("carrot", 3)]
+
+
+def setting(data):
+    # 두번째 인덱스 기준으로 정렬
+    return data[1]
+
+
+result = sorted(array, key=setting)
+print(result)

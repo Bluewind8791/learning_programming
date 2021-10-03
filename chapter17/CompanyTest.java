@@ -1,6 +1,6 @@
 package chapter17;
 
-import java.util.Calendar;
+// import java.util.Calendar;
 
 public class CompanyTest {
 
@@ -12,7 +12,7 @@ public class CompanyTest {
     System.out.println(comInstance1);
     System.out.println(comInstance2);
 
-    Calendar calendar = Calendar.getInstance(); // 싱글톤 패턴
+    // Calendar calendar = Calendar.getInstance(); // 싱글톤 패턴
   }
   
 }

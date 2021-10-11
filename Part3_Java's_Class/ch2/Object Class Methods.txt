@@ -1,0 +1,15 @@
+
+* equals()
+두 인스턴스의 주소값을 비교하여 return true/false
+재정의하여 두 인스턴스가 논리적으로 동일함의 여부를 구현
+
+* hashCode()
+hashCode()는 instance의 저장주소를 반환함
+heap memory에 instance가 저장되는 방식이 hash 방식
+
+hash: 정보를 저장, 검색하는 자료구조
+자료의 특정 값(키 값)에 대한 저장 위치를 반환해주는 hash 함수를 사용
+
+저장위치     객체정보
+index = hash(key)
+      해시 함수

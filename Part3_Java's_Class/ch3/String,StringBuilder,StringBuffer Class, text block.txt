@@ -1,0 +1,34 @@
+* String Class
+
+String str1 = new String("abc"); <- heap memory에 따로 잡힘
+String str2 = new String("abc");
+
+str1 != str2 <- heap memory 주소가 다름
+
+String str1 = "abc"; <- 상수 pool에 있는 주소
+String str2 = "abc";
+str1 == str2
+
+
+- 한번 생성된 String 은 immutable
+- String을 연결하면 새로운 문자열이 생성되어 메모리 낭비가 심할 수도 있음.
+
+
+String java = new String("Java");
+String android = new String("Android");
+
+java = java.concat(android);
+
+
+- JavaAndroid 라는 문자열이 새로 생성되며 java가 가르키는 주소가 JavaAndroid의 주소로 변경
+- Java, Android는 여전히 메모리에 남아있음
+
+
+
+* StringBuilder, StringBuffer 활용하기
+
+- 내부적으로 가변적인 char[]를 멤버 변수로 가짐
+- 문자열을 여러번 연결하거나 변경할때 사용하면 유용
+
+- 단일 thread 일때 StringBuilder
+- multi thread 일때 StringBuffer

@@ -14,6 +14,8 @@ instance inner class, static inner class, local inner class, anonymous inner cla
 // anonymous를 제외하고 변수와 다를것이 없음.
 
 
+------------------------------------------------------------------------
+
 
 * Instance Inner Class
 
@@ -27,6 +29,7 @@ OutClass outClass = new OutClass();
 OutClass.InClass inClass = outClass.new InClass();
 
 
+------------------------------------------------------------------------
 
 
 * Static Inner Class
@@ -37,6 +40,7 @@ OutClass.InClass inClass = outClass.new InClass();
 ex) InnerTest.java 참고
 
 
+------------------------------------------------------------------------
 
 
 * Local Inner Class
@@ -46,3 +50,26 @@ ex) InnerTest.java 참고
   지역 내부 클래스에서 사용하는 메서드의 지역 변수나 매개 변수는 final로 선언됨
 
 ex) Outer.java 참고
+
+
+------------------------------------------------------------------------
+
+
+* Anonymous Inner Class
+
+- Local Inner Class에서 굳이 이름을 지정할 필요가 없기 때문에
+  method 안에서 바로 return을 함.
+
+- 이름이 없는 클래스
+- 클래스의 이름을 생략하고 주로 하나의 인터페이스나 하나의 추상 클래스를 구현하여 반환
+- 인터페이스나 추상 클래스 자료형의 변수에 직접 대입하여 클래스를 생성하거나
+  지역 내부 클래스의 메서드 내부에서 생성하여 반환 할 수 있음.
+
+- widget의 이벤트 핸들러에 활용됨
+
+buttonOn.setOnClickListener(new View.OnClickListener()) {
+  public boolean onClick(View v) {
+    Toast.makeText(getBaseContext(), "hello", Toast.LENGTH_LONG).show();
+    return true;
+  }
+}

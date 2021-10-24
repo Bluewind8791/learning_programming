@@ -1,0 +1,21 @@
+
+* try - catch
+
+try {
+  // 예외가 발생할 수 있는 코드 부분
+} catch(처리할 예외 타입 e) {
+  // 예외가 발생했을 때 처리하는 부분
+  // 보통 로그를 먼저 남기고 다음 처리를 함
+} finally {
+  // finally 는 반드시 호출됨. 심지어 return이 되어도.
+}
+
+
+
+
+* try-with-resources
+
+- 리소스를 사용하는 경우 close() 하지 않아도 자동으로 해제 됨.
+- 리소스를 try() 내부에서 선언해야 함
+
+- FileInputStream이 AutoCloseable을 구현하고 있음

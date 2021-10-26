@@ -1,4 +1,0 @@
-10월 25, 2021 10:25:56 오후 ch11.MyLogger warning
-WARNING: Name must not be null.
-10월 25, 2021 10:25:56 오후 ch11.MyLogger warning
-WARNING: Name is too long.

@@ -1,0 +1,18 @@
+
+* Serializable interface
+
+- 직렬화는 인스턴스의 내용이 외부로 유출되는 것이므로 
+  프로그래머가 해당 객체애 대한 직렬화 의도를 표시해야 함.
+
+- 구현 코드가 없는 maker interface
+
+- transient : 직렬화 하지 않으려는 멤버 변수에 사용 (Socket등 직렬화 할 수 없는 객체)
+
+
+
+
+* Externalizable interface
+
+- writeExternal() 과 readExternal() 구현해야함
+
+- 프로그래머가 직접 객체를 읽고 쓰는 코드를 구현 가능

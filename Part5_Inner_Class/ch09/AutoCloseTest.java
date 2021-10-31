@@ -3,11 +3,8 @@ package ch09;
 public class AutoCloseTest {
   
   public static void main(String[] args) {
-    
-    AutoCloseableObj obj = new AutoCloseableObj();
 
-
-    try (obj) {
+    try (AutoCloseableObj obj = new AutoCloseableObj()) {
       // 아무것도 안했는데 auto close 가 불림
       throw new Exception(); // exception 강제로 발생
 

@@ -33,3 +33,23 @@ int read(byte b[], int off, int len)
 
 void close()
     입력 스트림과 연결된 대상 리소스를 닫기 (생략 가능)
+
+
+
+* OutputStream
+
+- byte 단위 출력 스트림 최상위 추상 클래스
+
+
+- 주요 하위 클래스 
+FileOutputStream        : 파일에서 바이트 단위로 자료 쓰기
+ByteArrayOutputStream   : byte 배열 메모리에서 바이트 단위로 자료 쓰기
+FilterOutputStream      : 기반 스트림에서 자료를 쓸때 추가 기능을 제공하는 보조 스트림의 상위 클래스
+
+
+- 주요 메서드
+int write()             : 한 바이트 출력
+int write(byte b[])     : b[] 크기의 자료 출력
+int write(byte b[], int off, int len)   : b[] 배열에 있는 자료의 off 위치부터 len 개수만큼 출력
+void flush()            : 출력을 위해 잠시 자료가 머무르는 출력 버퍼를 강제로 비워 자료를 출력
+void close()            : 출력 스트림과 관련된 리소스 닫기. 출력 버퍼 비워짐.

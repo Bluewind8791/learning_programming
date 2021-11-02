@@ -1,0 +1,44 @@
+
+22. multi-thread 프로그래밍에서의 동기화
+
+
+* critical section 과 semaphore
+
+- critical section 은 두개 이상의 쓰레드가 동시에 접근하는경우
+  문제가 생길 수 있기때문에 동시에 접근할수없는 영역
+
+- semaphore 는 특별한 형태의 시스템 객체이며
+  get / release 두개 기능이있다.
+
+- 한순간 오직 하나의 쓰레드가 semaphore 를 얻을수있고 나머지 쓰레드들은 대기(blocking) 상태가 된다.
+
+- semaphore를 얻은 쓰레드만이 critical section 에 들어갈 수 있다.
+
+
+
+
+
+* Synchronization
+
+- 두개의 스레드가 같은 객체에 접근 할 경우,
+  공유 자원을 lock 하여 다른 스레드의 접근을 제어
+
+- 동기화를 잘못 구현하면 deadlock에 빠질수있다.
+
+
+* synchronized block
+
+synchronized(참조형 수식) {
+  수행문
+}
+
+
+* synchronized method
+
+- 객채의 메소드에 synchronized 키워드 사용
+- 현재 이 메서드가 속해있는 객체에 lock
+
+- 자바에서는 deadlock을 방지하는 기술이 없으므로 
+  되도록이면 synchronized 메서드에서 다른 synchronized 메서드는 호출 X
+
+

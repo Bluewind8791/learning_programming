@@ -2,12 +2,12 @@ package ch16;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
+// import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
+// import java.io.InputStreamReader;
+// import java.net.Socket;
 
 public class FileCopyTest {
   
@@ -33,15 +33,15 @@ public class FileCopyTest {
 
     System.out.println("Program shutdown.\nThe program takes " + milliSecond);
 
-    // Socket
-    Socket socket = new Socket();
-    BufferedReader br;
-    try {
-      br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      br.readLine();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    // // Socket
+    // Socket socket = new Socket();
+    // BufferedReader br;
+    // try {
+    //   br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    //   br.readLine();
+    // } catch (IOException e) {
+    //   e.printStackTrace();
+    // }
     
 
   }

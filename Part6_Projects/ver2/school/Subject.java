@@ -1,6 +1,8 @@
-package school;
+package ver2.school;
 
 import java.util.ArrayList;
+
+import ver2.utils.Define;
 
 public class Subject {
   
@@ -11,10 +13,10 @@ public class Subject {
   // 수강신청한 학생 리스트
   ArrayList<Student> studentList = new ArrayList<>();
 
-  public Subject(String subjectName, int subjectID, int gradeType) {
+  public Subject(String subjectName, int subjectID) {
     this.subjectName = subjectName;
     this.subjectID = subjectID;
-    this.gradeType = gradeType;
+    this.gradeType = Define.AB_TYPE;
   }
 
   // 과목 수강신청 메서드

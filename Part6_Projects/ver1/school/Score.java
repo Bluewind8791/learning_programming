@@ -1,4 +1,4 @@
-package school;
+package ver1.school;
 
 
 public class Score {

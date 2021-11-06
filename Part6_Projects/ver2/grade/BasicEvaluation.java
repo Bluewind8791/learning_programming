@@ -1,4 +1,4 @@
-package grade;
+package ver2.grade;
 
 // 기본 등급 평가
 public class BasicEvaluation implements GradeEvaluation {

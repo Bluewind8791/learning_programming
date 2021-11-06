@@ -1,4 +1,4 @@
-package grade;
+package ver2.grade;
 
 // 전공과목 등급 평가
 public class MajorEvaluation implements GradeEvaluation {

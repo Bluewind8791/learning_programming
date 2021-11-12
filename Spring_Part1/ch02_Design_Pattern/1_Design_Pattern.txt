@@ -56,3 +56,6 @@ SOLID 중에서 개방폐쇄원칙(OCP) 와 의존역전원칙(DIP)를 따름.
 - Observer
 - Strategy
 
+
+
+잔디 안심어짐 테스트

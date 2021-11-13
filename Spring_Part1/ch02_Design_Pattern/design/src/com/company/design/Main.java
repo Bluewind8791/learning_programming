@@ -1,24 +1,37 @@
 package com.company.design;
 
 
+import java.util.concurrent.atomic.AtomicLong;
+
 // import com.company.design.adapter.AirConditioner;
 // import com.company.design.adapter.Cleaner;
 // import com.company.design.adapter.HairDryer;
 // import com.company.design.adapter.SocketAdapter;
 import com.company.design.adapter.Electronic110V;
+import com.company.design.facade.Ftp;
+import com.company.design.facade.Reader;
+import com.company.design.facade.SftpClient;
+import com.company.design.facade.Writer;
+// import com.company.design.aop.AopBrower;
+// import com.company.design.decorator.A3;
+// import com.company.design.decorator.A4;
+// import com.company.design.decorator.A5;
+// import com.company.design.decorator.Audi;
+// import com.company.design.decorator.ICar;
+import com.company.design.observer.Button;
+import com.company.design.observer.IButtonListener;
 // import com.company.design.singleton.AClazz;
 // import com.company.design.singleton.BClazz;
 // import com.company.design.singleton.SocketClient;
-import com.company.design.proxy.Brower;
-import com.company.design.proxy.BrowerProxy;
-import com.company.design.proxy.IBrowser;
+// import com.company.design.proxy.Brower;
+// import com.company.design.proxy.BrowerProxy;
+// import com.company.design.proxy.IBrowser;
 
 
 public class Main {
     public static void main(String[] args) {
-        
         /*
-        // Singleton Example
+        //** Singleton Pattern Example **
         AClazz aClazz = new AClazz();
         BClazz bClazz = new BClazz();
 
@@ -28,9 +41,8 @@ public class Main {
         System.out.println("두개의 객체가 동일한가?");
         System.out.println(aClient.equals(bClient));
         */
-
         /*
-        // Adapter Example
+        //** Adapter Pattern Example **
         HairDryer hairDryer = new HairDryer();
         connect(hairDryer);
 
@@ -43,8 +55,8 @@ public class Main {
         Electronic110V airAdapter = new SocketAdapter(airConditioner);
         connect(airAdapter);
         */
-
-        // Proxy example
+        /*
+        //** Proxy Pattern example **
         Brower browser = new Brower("www.naver.com");
         browser.show();
         browser.show();
@@ -56,10 +68,91 @@ public class Main {
         cacheBrowser.show(); // Brower Proxy use CACHE! HTML : www.naver.com
         cacheBrowser.show();
         cacheBrowser.show();
+        */
+        /*
+        // AOP: Aspect Oriented Programming (측면/양상 지향) : 여러군데서 사용되는 중복 코드 = aspect
+        AtomicLong start = new AtomicLong(); // AtomicLong : Long 자료형을 갖고있는 Wrapping class
+        AtomicLong end = new AtomicLong();   // thread-safe로 구현, 동시성 보장
+
+        IBrowser aopBrowser = new AopBrower("www.naver.com",
+        () -> {
+            System.out.println("Before.");
+            start.set(System.currentTimeMillis());
+        },
+        () -> {
+            long now = System.currentTimeMillis();
+            end.set(now - start.get());
+        });
+
+        aopBrowser.show();                // AtomicLong 값 읽기
+        System.out.println("Loading time : " + end.get()); // loading time 1.5 sec
+        aopBrowser.show();
+        System.out.println("Loading time : " + end.get()); // using cahce: loading time 0 sec
+        */
+
+        /*
+        //** Decorator Pattern Example **
+        ICar audi = new Audi(1000);
+        audi.showPrice();
+
+        // a3
+        ICar audi3 = new A3(audi, "A3");
+        audi3.showPrice();
+        // a4
+        ICar audi4 = new A4(audi, "A4");
+        audi4.showPrice();
+        // a5
+        ICar audi5 = new A5(audi, "A5");
+        audi5.showPrice();*/
+
+        /*
+        //** Observer Pattern Example **
+        Button button = new Button("BUTTON");
+
+        button.addListener(new IButtonListener() {
+            @Override
+            public void clickEvent(String event) {
+                System.out.println(event);
+            }
+        });
+
+        button.click("Send message : click 1");
+        button.click("Send message : click 2");
+        button.click("Send message : click 3");
+        button.click("Send message : click 4");*/
+
+
+        //** Facade Pattern Example **
+        // before facade pattern
+        Ftp ftpClient = new Ftp("www.naver.com", 22, "/home/etc");
+        ftpClient.connect();
+        ftpClient.moveDirectory();
+        // writing
+        Writer writer = new Writer("test.txt");
+        writer.fileConnect();
+        writer.fileWrite();
+        // reading
+        Reader reader = new Reader("test.txt");
+        reader.fileConnect();
+        reader.fileRead();
+        // disconnecting
+        reader.fileDisconnect();
+        writer.fileDisconnect();
+        ftpClient.disconnect();
+
+        // after facade pattern
+        SftpClient sftpClient = new SftpClient("www.foo.co.kr", 22, "/home/etc", "test.txt");
+        sftpClient.connect();
+        sftpClient.write();
+        sftpClient.read();
+        sftpClient.disconnect();
+
+
+
 
     }
 
-    // 110v 콘센트만 있음
+    // 110v 콘센트만 있음 (Adapter Example)
     public static void connect(Electronic110V electronic110v) {
         electronic110v.powerOn();
     }

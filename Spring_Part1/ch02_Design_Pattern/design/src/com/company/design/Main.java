@@ -1,7 +1,7 @@
 package com.company.design;
 
 
-import java.util.concurrent.atomic.AtomicLong;
+// import java.util.concurrent.atomic.AtomicLong;
 
 // import com.company.design.adapter.AirConditioner;
 // import com.company.design.adapter.Cleaner;
@@ -12,20 +12,24 @@ import com.company.design.facade.Ftp;
 import com.company.design.facade.Reader;
 import com.company.design.facade.SftpClient;
 import com.company.design.facade.Writer;
+import com.company.design.strategy.Base64Strategy;
 // import com.company.design.aop.AopBrower;
 // import com.company.design.decorator.A3;
 // import com.company.design.decorator.A4;
 // import com.company.design.decorator.A5;
 // import com.company.design.decorator.Audi;
 // import com.company.design.decorator.ICar;
-import com.company.design.observer.Button;
-import com.company.design.observer.IButtonListener;
+// import com.company.design.observer.Button;
+// import com.company.design.observer.IButtonListener;
 // import com.company.design.singleton.AClazz;
 // import com.company.design.singleton.BClazz;
 // import com.company.design.singleton.SocketClient;
 // import com.company.design.proxy.Brower;
 // import com.company.design.proxy.BrowerProxy;
 // import com.company.design.proxy.IBrowser;
+import com.company.design.strategy.Encoder;
+import com.company.design.strategy.EncodingStrategy;
+import com.company.design.strategy.NormalStrategy;
 
 
 public class Main {
@@ -121,7 +125,7 @@ public class Main {
         button.click("Send message : click 3");
         button.click("Send message : click 4");*/
 
-
+        /*
         //** Facade Pattern Example **
         // before facade pattern
         Ftp ftpClient = new Ftp("www.naver.com", 22, "/home/etc");
@@ -145,10 +149,22 @@ public class Main {
         sftpClient.connect();
         sftpClient.write();
         sftpClient.read();
-        sftpClient.disconnect();
+        sftpClient.disconnect();*/
 
 
+        //** Strategy Pattern Example ** */
 
+        Encoder encoder = new Encoder();
+
+        // base 64 strategy
+        EncodingStrategy base64 = new Base64Strategy();
+
+        // normal
+        EncodingStrategy normal = new NormalStrategy();
+
+        String message = "Hello Java";
+        encoder.setEncodingStrategy(base64);
+        String base64Result = encoder.getMessage(message);
 
     }
 

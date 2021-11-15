@@ -166,6 +166,9 @@ public class Main {
         encoder.setEncodingStrategy(base64);
         String base64Result = encoder.getMessage(message);
 
+        // Study 11/15
+        String msg2 = "Study 11/15";
+
     }
 
     // 110v 콘센트만 있음 (Adapter Example)

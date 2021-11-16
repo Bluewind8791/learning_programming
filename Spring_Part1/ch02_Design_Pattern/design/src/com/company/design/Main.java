@@ -8,10 +8,10 @@ package com.company.design;
 // import com.company.design.adapter.HairDryer;
 // import com.company.design.adapter.SocketAdapter;
 import com.company.design.adapter.Electronic110V;
-import com.company.design.facade.Ftp;
-import com.company.design.facade.Reader;
-import com.company.design.facade.SftpClient;
-import com.company.design.facade.Writer;
+// import com.company.design.facade.Ftp;
+// import com.company.design.facade.Reader;
+// import com.company.design.facade.SftpClient;
+// import com.company.design.facade.Writer;
 import com.company.design.strategy.Base64Strategy;
 // import com.company.design.aop.AopBrower;
 // import com.company.design.decorator.A3;
@@ -163,12 +163,13 @@ public class Main {
         EncodingStrategy normal = new NormalStrategy();
 
         String message = "Hello Java";
-        encoder.setEncodingStrategy(base64);
+        encoder.setEncodingStrategy(base64); // 64비트 전략 사용
         String base64Result = encoder.getMessage(message);
+        System.out.println(base64Result);
 
-        // Study 11/15
-        String msg2 = "Study 11/15";
-
+        encoder.setEncodingStrategy(normal); // normal 전략 사용
+        String normalResult = encoder.getMessage(message);
+        System.out.println(normalResult);
     }
 
     // 110v 콘센트만 있음 (Adapter Example)

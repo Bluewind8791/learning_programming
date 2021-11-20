@@ -1,0 +1,22 @@
+20. 자바에서 Thread 만들기
+
+
+* Thread 란?
+
+- Process : 실행중인 프로그램이 실행되면 os로부터 메모리를 할당받아 프로세스 상태가 됨.
+- Thread : 프로그램이 동작할때 CPU에서 할당받는 단위.
+
+
+
+* multi-threading
+
+- 여러 thread가 동시에 수행되는 프로그래밍 -> 여러 작업이 동시에 실행되는 효과.
+- thread는 각각 자신만의 작업 공간을 가짐 (context)
+
+- 각 thread 사이에서 공유하는 자원이 있을수있음 (자바에서는 static instance)
+
+- 여러 thread가 자원을 공유하여 작업이 수행되는 경우
+  서로 자원을 차지하려는 race condition 이 발생될수있음
+
+- 이렇게 여러 thread가 공유하는 자원중 경쟁이 발생하는 부분을 critical section 이라고 함
+- critical section 에 대한 동기화를 구현하지 않으면 오류 발생 가능.

@@ -1,0 +1,42 @@
+
+* Reader
+
+- 문자 단위 입력 스트림 최상위 추상 클래스
+
+
+- 주요 하위 클래스
+FileReader        : 파일에서 문자 단위로 읽는 스트림 클래스
+InputStreamReader : 바이트 단위로 읽은 자료를 문자로 변환
+BufferedReader    : 문자로 읽을 때 배열을 제공하여 한꺼번에 읽을 수 있는 기능 제공
+
+
+- 주요 메서드
+int read()
+int read(char[] buf)
+int read(char[] buf, int off, int len)
+void close()
+
+
+
+
+* FileReader
+
+
+
+
+
+* DataInputStream and DataOutputStream
+
+- 자료가 메모리에 저장된 상태 그대로 읽거나 쓰는 스트림
+
+
+- DataInputStream method
+byte readByte()       : read one byte
+boolean readBoolean() : 읽은 자료가 0이 아니면 true / 0이면 false
+char readChar()
+short readShort()
+int readInt()
+long readLong()
+float readFloat()
+double readDouble()
+String readUTF()      : 수정된 UTF-8 인코딩 기반으로 문자열 읽고 반W

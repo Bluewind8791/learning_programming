@@ -1,0 +1,15 @@
+
+03. 함수형 인터페이스와 람다식 구현하여 사용
+
+* 함수형 인터페이스
+  : lambda식을 선언하기 위한 interface
+
+- @FunctionalInterface
+
+- @ (Annotation) : 컴파일러에게 이게 무엇인지 알려줌
+
+- FunctionalInterface는 method 1개만 사용
+
+
+
+

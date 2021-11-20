@@ -1,0 +1,15 @@
+
+Object Class - 모든 클래스의 최상위 클래스
+
+* java.lang package
+프로그래밍 시 import 하지않아도 자동으로 import
+String, Integer, System ...등등
+
+
+* 모든 class 는 Object class 를 상속받는다
+모든 클래스의 최상위 클래스
+Object class 중 일부는 final 안되어 있으면 재정의 가능
+컴파일러가 extends Object 추가함.
+
+* toString() method
+객채의 정보를 String으로 바꾸어서 사용

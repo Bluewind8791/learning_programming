@@ -1,0 +1,10 @@
+
++++ Access Modifier +++
+- private : 같은 클래스 내부
+- default : 같은 패키지 내부
+- protected : 같은 패키지, 상속관계의 클래스
+- public : 어디서나
+
+
++++ get() / set() method +++
+private로 선언된 멤머 변수에 대해 접근 수정할 수 있는 method 를 public으로 제공

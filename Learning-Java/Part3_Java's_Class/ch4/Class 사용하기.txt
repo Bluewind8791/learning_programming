@@ -1,0 +1,10 @@
+
+* Class class
+
+
+- Class 클래스는 컴파일 된 class 파일을 로드하여 객체를 동적 로드하고 정보를 가져오는 메서드를 제공.
+- Class.forName("클래스이름"); method로 class 를 동적으로 load
+
+
+* Class의 newInstance() 메서드로 인스턴스 생성
+- new 키워드 사용하지않고 인스턴스 생성

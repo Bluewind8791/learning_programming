@@ -33,9 +33,15 @@ class UserRepositoryTest {
     }
 
     @Test
-    void pagingAndSortingTest() {
+    void sortingTest() {
         log.info("findFirstByName WithSortParams : {}", userRepository.findFirstByName("ben", Sort.by(Order.desc("id"))));
         log.info("findFirstByName WithSortParams : {}", userRepository.findFirstByName("ben", Sort.by(Order.desc("id"), Order.asc("email"))));
+    }
+
+
+    @Test
+    void pagingTest() {
+        
     }
 }
 

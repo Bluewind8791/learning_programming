@@ -40,6 +40,36 @@
         @AfterThrowing  : 메소드 호출 실패 예외 발생 (Throws)
         @Around         : Before / After 모두 제어
     }
-    
-    
+}
+
+
+** Spring Boot Annotations {
+
+    @SpringBootApplication      : Spring boot application 으로 설정
+    @Controller                 : View를 제공하는 controller로 설정
+    @RestController             : REST API 를 제공하는 controller로 설정
+
+    @RequestMapping             : URL 주소를 mapping 
+    @GetMapping                 : http GetMethod URL 주소 mapping 
+    @PostMapping
+    @PutMapping
+    @DeleteMapping
+
+    @RequestParam               : URL Query Parameter mapping
+    @RequestBody                : http body를 Parsing mapping 
+    @Valid                      : POJO Java class의 검증
+
+    @Configuration              : 1개 이상의 bean을 등록할때 설정
+    @Component                  : 1개의 class 단위의 bean을 등록
+    @Bean                       : 1개의 외부 라이브러리로부터 생성한 객체를 등록시 사용
+    @Autowired                  : DI를 위한곳에 사용
+    @Qualifier                  : @Autowired 사용시 bean이 2개 이상일때 명시적 사용
+    @Resource                   : @Autowired + @Qualifier 의 개념
+
+    @Aspect                     : AOP 적용시 사용
+    @Before                     : AOP 메소드 이전 호출 지정
+    @After                      : AOP 메소드 호출 이후 지정, 예외 발생 포함
+    @Around                     : AOP 이전/이후 모두 포함, 예외 발생 포함
+    @AfterReturing              : AOP 메소드의 호출이 정상일때 실행
+    @AfterThrowing              : AOP시 해당 메소드가 예외 발생할때 지정
 }

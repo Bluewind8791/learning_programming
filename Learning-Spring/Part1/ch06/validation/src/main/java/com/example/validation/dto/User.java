@@ -1,14 +1,17 @@
 package com.example.validation.dto;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+// import java.time.LocalDate;
+// import java.time.format.DateTimeFormatter;
 
-import javax.validation.constraints.AssertTrue;
+// import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+// import javax.validation.constraints.Size;
+
+import com.example.validation.annotation.YearMonth;
+
 
 public class User {
 
@@ -24,22 +27,14 @@ public class User {
     @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$", message = "It does not match the form of the cell phone number.") // 정규식
     private String phoneNumber;
 
-    @Size(min = 6, max = 6)
+    @YearMonth
     private String reqYearMonth; // yyyyMM
 
-    @AssertTrue(message = "Please insert YYYYMM form") // boolean에는 is-- 로 메소드명 지정
-    public boolean isReqYearMonthValidation() {
-
-        // this.reqYearMonth = getReqYearMonth() + "01";
-
-        try {
-            LocalDate localDate = LocalDate.parse(reqYearMonth+"01", DateTimeFormatter.ofPattern("yyyyMM"));
-        } catch (Exception e) {
-            return false;
-        }
-        
-        return true;
-    }
+    // @AssertTrue(message = "Please insert YYYYMM form") // boolean에는 is-- 로 메소드명 지정
+    // public boolean isReqYearMonthValidation() {
+    //     // this.reqYearMonth = getReqYearMonth() + "01";
+    //     return true;
+    // }
 
 
     // getter and setter

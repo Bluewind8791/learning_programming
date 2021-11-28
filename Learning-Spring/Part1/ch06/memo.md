@@ -56,3 +56,17 @@ public void run(String account, String pw, int age) {
 
 2. ConstraintValiator를 적용하여 재사용이 가능한 Custom Logic 적용 가능
 
+
+
+## Spring Boot Exception
+
+#### Exception 처리
+Web Application의 입장에서 바라보았을때, 에러가 났을때 내려줄 수 있는 방법은 많지않음.
+
+1. 에러페이지
+2. 4XX error or 5XX error
+3. Client가 200외에 처리를 하지 못할때는 200을 내려주고 별도의 에러 메세지 전달
+
+
++ @ControllerAdvice       Global 예외처리 및 특정 package/controller 처리
++ @ExceptionHandler       특정 controller의 예외처리

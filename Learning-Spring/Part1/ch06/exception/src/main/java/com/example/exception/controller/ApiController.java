@@ -1,11 +1,15 @@
 package com.example.exception.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.example.exception.dto.User;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/user")
+@Validated
 public class ApiController {
     
     @GetMapping("") // required = false는 ?name=1234 로 값이 들어가있지 않아도 실행시키게 함, default는 true
-    public User get(@RequestParam(required = false) String name, @RequestParam(required = false) Integer age) {
+    public User get(
+        @Size(min = 3) // Validated와 @Size를 통하여 변수들 검증
+        @RequestParam String name, 
+
+        @NotNull
+        @Min(1)
+        @RequestParam Integer age) {
         User user = new User();
         user.setName(name);
         user.setAge(age);

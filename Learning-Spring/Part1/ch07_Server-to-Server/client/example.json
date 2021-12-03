@@ -1,0 +1,9 @@
+{
+    "header" : {
+        "response_code" : "OK"
+    },
+    "body" : {
+        "book" : "spring boot",
+        "page" : 1024
+    }
+}

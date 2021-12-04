@@ -1,5 +1,6 @@
 package com.example.client.controller;
 
+import com.example.client.dto.Req;
 import com.example.client.dto.UserResponse;
 import com.example.client.service.RestTemplateService;
 
@@ -16,7 +17,8 @@ public class ApiController {
     private RestTemplateService restTemplateService;
 
     @GetMapping("/hello")
-    public UserResponse getHello() {
-        return restTemplateService.exchange();
+    public Req<UserResponse> getHello() {
+        return restTemplateService.genericExchange();
+        // return restTemplateService.exchange();
     }
 }

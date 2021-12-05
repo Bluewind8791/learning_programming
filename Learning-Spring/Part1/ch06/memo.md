@@ -86,8 +86,8 @@ Web Application의 입장에서 바라보았을때, 에러가 났을때 내려�
 
 ## Interceptor
 
--Interceptor란 Filter와 매우 유사한 형태로 존재하지만, 차이점은 Spring Context에 등록됨.
--AOP와 유사한 기능을 제공할수있으며, 주로 **인증 단계**를 처리하거나, Logging을 하는데에 사용.<br>이를 선/후 처리함으로써, Service business logic과 분리시킨다.
+- Interceptor란 Filter와 매우 유사한 형태로 존재하지만, 차이점은 Spring Context에 등록됨.
+- AOP와 유사한 기능을 제공할수있으며, 주로 **인증 단계**를 처리하거나, Logging을 하는데에 사용.<br>이를 선/후 처리함으로써, Service business logic과 분리시킨다.
 
 
 

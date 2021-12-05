@@ -9,7 +9,7 @@
 
 ex) 단순한 예시 코드
 
-'''
+```java
 public void run(String account, String pw, int age) {
 
     if (account == null || pw == null) {
@@ -22,8 +22,7 @@ public void run(String account, String pw, int age) {
 
     // logics
 }
-'''java
-
+```
 
 
 1. 검증해야할 값이 많은경우 코드의 길이가 길어진다
@@ -66,25 +65,24 @@ Web Application의 입장에서 바라보았을때, 에러가 났을때 내려�
 2. 4XX error or 5XX error
 3. Client가 200외에 처리를 하지 못할때는 200을 내려주고 별도의 에러 메세지 전달
 
-
-+ @ControllerAdvice       Global 예외처리 및 특정 package/controller 처리
-+ @ExceptionHandler       특정 controller의 예외처리
+| --- | --- |
+| @ControllerAdvice | Global 예외처리 및 특정 package/controller 처리|
+| @ExceptionHandler | 특정 controller의 예외처리|
 
 
 
 ## Filter
 
-Filter란, Web Application에서 관리되는 영역으로써
-Spring Boot Framework에서 클라이언트로부터 오는 요청/응답에 대해서
-최초/최종 단계 위치에 존재하며,
-이를 통하여 요청/응답의 정보를 변경하거나, 
-Spring에 의해서 데이터가 변환되기 전의 순수한 Client의 요청/응답 값을 확인할 수 있다.
+Filter란, Web Application에서 관리되는 영역으로써,<br>
+Spring Boot Framework에서 클라이언트로부터 오는 요청/응답에 대해서 최초/최종 단계 위치에 존재하며,<br>
+이를 통하여 요청/응답의 정보를 변경하거나,<br>
+Spring에 의해서 데이터가 변환되기 전의 순수한 Client의 요청/응답 값을 확인할 수 있다.<br>
 
-++유일하게 SerletRequest, ServletResponse의 객체를 변환++할수 있다.
+**유일하게 SerletRequest, ServletResponse의 객체를 변환**할수 있다.
 
 주로 Spring Framework에서는
 request / response의 Logging 용도로 활용하거나
-인증과 관련된 Logic들을 해당 필터에서 처리
+인증과 관련된 Logic들을 해당 필터에서 처리<br>
 
 이를 선/후 처리함으로써 Service business logic과 분리시킨다.
 
@@ -96,9 +94,9 @@ request / response의 Logging 용도로 활용하거나
 Interceptor란 Filter와 매우 유사한 형태로 존재하지만, 차이점은 Spring Context에 등록됨.
 
 AOP와 유사한 기능을 제공할수있으며,
-주로 ++인증 단계++를 처리하거나,
+주로 **인증 단계**를 처리하거나,
 Logging을 하는데에 사용
-
+<br>
 이를 선/후 처리함으로써, Service business logic과 분리시킨다.
 
 

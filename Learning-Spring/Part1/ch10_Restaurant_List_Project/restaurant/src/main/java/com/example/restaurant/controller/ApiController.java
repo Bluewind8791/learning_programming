@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/food")
+@RequestMapping("/api/restaurant")
 @RequiredArgsConstructor
 public class ApiController {
     
@@ -30,7 +30,7 @@ public class ApiController {
         return wishListService.search(query);
     }
 
-    @PostMapping("/wish-list")
+    @PostMapping("")
     public WishListDto add(@RequestBody WishListDto wishListDto) {
         log.info("{}", wishListDto);
         return wishListService.add(wishListDto);

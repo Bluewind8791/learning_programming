@@ -21,13 +21,12 @@ class UserRepositoryTest {
     @Transactional
     void crud() { // create, read, update, delete
         
-        User user = new User();
-        user.setEmail("slow");
+        userRepository.save(new User("Ben", "ben@email.com"));
 
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("email", GenericPropertyMatchers.contains());
-        Example<User> example = Example.of(user, matcher);
+        User user = userRepository.findById(1L).orElse(null);
+        user.setEmail("updated@email.com");
 
-        userRepository.findAll(example).forEach(System.out::println);
+        userRepository.save(user);
     }
 }
 

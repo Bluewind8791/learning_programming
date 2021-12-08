@@ -97,3 +97,15 @@ Example<User> example = Example.of(user, matcher);
 userRepository.findAll(example).forEach(System.out::println);
 ```
 email 항목에서 slow라는 문자열이 있는지 매칭함.
+
+
+## Save
+
+```java
+userRepository.save(new User("Ben", "ben@email.com"));
+
+User user = userRepository.findById(1L).orElse(null);
+user.setEmail("updated@email.com");
+
+userRepository.save(user);
+```

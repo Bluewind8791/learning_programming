@@ -6,9 +6,6 @@ import com.fastcampus.jpa.bookmanager.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -28,5 +25,13 @@ class UserRepositoryTest {
 
         userRepository.save(user);
     }
+
+    @Test
+    void select() {
+
+        System.out.println("find something by e-mail : " + userRepository.findFirst1ByName("Ben"));
+        System.out.println("find something by e-mail : " + userRepository.findTop1ByName("Ben"));
+    }
+
 }
 

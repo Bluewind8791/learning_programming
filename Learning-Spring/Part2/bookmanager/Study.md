@@ -1,5 +1,7 @@
 # CRUD - Create, Read, Update, Delete
 
+## Simple Jpa Repository
+
 ```java
 // findAll() table의 전체값을 가져오는 메소드
 userRepository.save(new User()); // save() 
@@ -12,49 +14,73 @@ User user2 = new User("Samuel", "samu@email");
 userRepository.saveAll(Lists.newArrayList(user1, user2));
 List<User> users = userRepository.findAll();
 users.forEach(System.out::println);
+```
 
+### findById()
 
-// findById()
+```java
 Optional<User> user = userRepository.findById(1L);
 System.out.println(user);
+```
 
+### flush()
 
-// flush()
+```java
 userRepository.save(new User("name", "email"));
 userRepository.flush();
 // == saveAndFlush(new User("name", "email"));
 userRepository.findAll().forEach(System.out::println);
-
-
-// count() - DB의 수 return
-long count = userRepository.count();
-System.out.println(count);
-
-
-// existsById - 1 index가 존재하는지 boolean으로 return
-boolean exits = userRepository.existsById(1L);
-System.out.println(exits);
-
-
-// delete() : entity must not be null
-userRepository.delete(userRepository.findById(1L).orElseThrow(RuntimeException::new));
-
-
-// deleteById(index) : select query -> delete
-userRepository.deleteById(1L);
-
-
-// deleteAll()
-userRepository.deleteAll();
-
-
-// deleteAllInBatch()
-userRepository.deleteAllInBatch(userRepository.findAllById(Lists.newArrayList(1L, 3L)));
-
 ```
 
+### count()
 
+```java
+long count = userRepository.count();
+System.out.println(count);
+```
 
+DB의 수 return
+
+### existsById(index)
+
+```java
+boolean exits = userRepository.existsById(1L);
+System.out.println(exits);
+```
+
+index가 존재하는지 boolean으로 return
+
+### delete
+
+```java
+userRepository.delete(userRepository.findById(1L).orElseThrow(RuntimeException::new));
+```
+
+entity must not be null
+
+### deleteById(index)
+
+```java
+userRepository.deleteById(1L);
+```
+
+select query -> delete
+
+### deleteAll()
+
+```java
+userRepository.deleteAll();
+```
+
+findAll()후에 각 element를 delete
+
+### deleteAllInBatch()
+
+```java
+userRepository.deleteAllInBatch(userRepository.findAllById(Lists.newArrayList(1L, 3L)));
+```
+
+query를 만들고 delete 실행, 쿼리 한번만 실행
 
 ## Page
 
@@ -71,8 +97,6 @@ System.out.println("size : " + users.getSize());
 users.getContent().forEach(System.out::println);
 ```
 
-
-
 ## Example (searching)
 
 ```java
@@ -84,8 +108,8 @@ Example<User> example = Example.of(new User("ma", "fastcam.com"), matcher);
 userRepository.findAll(example).forEach(System.out::println);
 ```
 
-withIgnorePaths()에 name을 넣었기때문에 "ma"는 무시되며, fastcam.com으로 끝나는 email db를 조회함.
-
+withIgnorePaths()에 name을 넣었기때문에 "ma"는 무시되며,  
+fastcam.com으로 끝나는 email db를 조회함.
 
 ``` java
 User user = new User();
@@ -96,8 +120,8 @@ Example<User> example = Example.of(user, matcher);
 
 userRepository.findAll(example).forEach(System.out::println);
 ```
-email 항목에서 slow라는 문자열이 있는지 매칭함.
 
+email 항목에서 slow라는 문자열이 있는지 매칭함.
 
 ## Save
 

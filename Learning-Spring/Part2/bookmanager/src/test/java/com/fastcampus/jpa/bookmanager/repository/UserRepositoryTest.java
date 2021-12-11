@@ -1,13 +1,19 @@
 package com.fastcampus.jpa.bookmanager.repository;
 
 
+
 import com.fastcampus.jpa.bookmanager.domain.User;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootTest
 class UserRepositoryTest {
 
@@ -27,11 +33,9 @@ class UserRepositoryTest {
     }
 
     @Test
-    void select() {
-
-        System.out.println("find something by e-mail : " + userRepository.findFirst1ByName("Ben"));
-        System.out.println("find something by e-mail : " + userRepository.findTop1ByName("Ben"));
+    void pagingAndSortingTest() {
+        log.info("findFirstByName WithSortParams : {}", userRepository.findFirstByName("ben", Sort.by(Order.desc("id"))));
+        log.info("findFirstByName WithSortParams : {}", userRepository.findFirstByName("ben", Sort.by(Order.desc("id"), Order.asc("email"))));
     }
-
 }
 

@@ -23,6 +23,8 @@ void pagingAndSortingTest() {
 - Asc : 정순
 - Desc : 역순
 
+---
+
 ## Sort Class를 활용하여 정렬하기
 
 ```java

@@ -25,6 +25,8 @@ class UserRepositoryTest {
 
 두가지 조건 둘다 만족해야 결과값으로 리턴.
 
+---
+
 ## Or
 
 ```java
@@ -49,6 +51,8 @@ class UserRepositoryTest {
 ```
 
 조건중 둘중 하나라도 맞다면 결과값으로 리턴.
+
+---
 
 ## After
 
@@ -76,6 +80,8 @@ class UserRepositoryTest {
 }
 ```
 
+---
+
 ## GreaterThan (>)
 
 ```java
@@ -98,6 +104,8 @@ class UserRepositoryTest {
     }
 }
 ```
+
+---
 
 ## GreaterThanEqual (>=)
 
@@ -123,6 +131,8 @@ class UserRepositoryTest {
 ```
 
 … where x.age >= ?
+
+---
 
 ## Between
 
@@ -154,6 +164,8 @@ between 조건은 양단의 조건을 포함하고 있음.
 (findByIdBetween 조건에서 결과값은 id 1,2,3 이 결과값으로 나옴)  
 즉, findByIdGraterThanEqualAndLessThanEqual() 과 같은 조건.
 
+---
+
 ## IsNotNull / IsNotEmpty
 
 ```java
@@ -183,6 +195,8 @@ class UserRepositoryTest {
 - IsNotNull : where user0_.id is not null
 - IsNotEmpty : 평소의 not empty 의 의미는 "" 이나, JPA에서의 not empty 뜻은 collection type의 not empty이다. 잘 쓰이지 않는 구문.
 
+---
+
 ## In / NotIn
 
 ```java
@@ -207,6 +221,8 @@ class UserRepositoryTest {
 ```
 
 - In : or 과 비슷한 성능을 내는 쿼리.
+
+---
 
 ## StartingWith / EndingWith / Containing
 
@@ -238,6 +254,8 @@ class UserRepositoryTest {
 - EndingWith : ~로 끝나는
 - Containing : ~를 포함하는
 
+---
+
 ## Like
 
 ```java
@@ -260,6 +278,8 @@ class UserRepositoryTest {
         log.info("findByNameLike : {}", userRepository.findByNameLike("Be%")); // start with
 }
 ```
+
+---
 
 ## Is
 

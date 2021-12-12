@@ -20,6 +20,8 @@ void select() {
 }
 ```
 
+---
+
 ## ...By ...()
 
 ```java
@@ -46,6 +48,8 @@ System.out.println("find something by e-mail : " + userRepository.findSomethingB
 ```
 
 findSomethingByEmail() 로 동작시켜도 오류없이 돌아감.
+
+---
 
 ## 접두사 뒤에 붙는 First, Top
 

@@ -82,6 +82,8 @@ userRepository.deleteAllInBatch(userRepository.findAllById(Lists.newArrayList(1L
 
 query를 만들고 delete 실행, 쿼리 한번만 실행
 
+---
+
 ## Page
 
 ```java
@@ -96,6 +98,8 @@ System.out.println("size : " + users.getSize());
 
 users.getContent().forEach(System.out::println);
 ```
+
+---
 
 ## Example (searching)
 
@@ -122,6 +126,8 @@ userRepository.findAll(example).forEach(System.out::println);
 ```
 
 email 항목에서 slow라는 문자열이 있는지 매칭함.
+
+---
 
 ## Save
 

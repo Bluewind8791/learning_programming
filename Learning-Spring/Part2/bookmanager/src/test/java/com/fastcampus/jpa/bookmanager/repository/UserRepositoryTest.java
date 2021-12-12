@@ -7,6 +7,7 @@ import com.fastcampus.jpa.bookmanager.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,14 +35,17 @@ class UserRepositoryTest {
 
     @Test
     void sortingTest() {
-        log.info("findFirstByName WithSortParams : {}", userRepository.findFirstByName("ben", Sort.by(Order.desc("id"))));
-        log.info("findFirstByName WithSortParams : {}", userRepository.findFirstByName("ben", Sort.by(Order.desc("id"), Order.asc("email"))));
+        log.info("findFirstByName WithSortParams : {}", 
+            userRepository.findFirstByName("ben", Sort.by(Order.desc("id"))));
+        log.info("findFirstByName WithSortParams : {}", 
+            userRepository.findFirstByName("ben", Sort.by(Order.desc("id"), Order.asc("email"))));
     }
 
 
     @Test
     void pagingTest() {
-        
+        log.info("findByName with paging : {}",
+            userRepository.findByName("ben", PageRequest.of(0, 1, Sort.by(Order.desc("id")))));
     }
 }
 

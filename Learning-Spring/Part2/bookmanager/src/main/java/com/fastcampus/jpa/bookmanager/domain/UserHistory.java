@@ -2,11 +2,11 @@ package com.fastcampus.jpa.bookmanager.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.fastcampus.jpa.bookmanager.domain.listener.Auditable;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,12 +21,13 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class UserHistory extends BaseEntity implements Auditable {
+public class UserHistory extends BaseEntity {
     
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id") // column name 지정
     private Long userId;
 
     private String name;

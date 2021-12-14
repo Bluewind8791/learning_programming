@@ -1,5 +1,7 @@
 package com.fastcampus.jpa.bookmanager.domain.listener;
 
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -11,8 +13,8 @@ import com.fastcampus.jpa.bookmanager.support.BeanUtils;
 
 public class UserEntityListener {
 
-    @PrePersist
-    @PreUpdate
+    @PostPersist
+    @PostUpdate
     public void prePresistAndPreUpdate(Object obj) {
         UserHistoryRepository userHistoryRepository = BeanUtils.getBean(UserHistoryRepository.class);
 

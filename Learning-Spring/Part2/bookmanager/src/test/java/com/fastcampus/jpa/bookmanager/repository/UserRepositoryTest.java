@@ -2,9 +2,11 @@ package com.fastcampus.jpa.bookmanager.repository;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fastcampus.jpa.bookmanager.domain.Gender;
 import com.fastcampus.jpa.bookmanager.domain.User;
+import com.fastcampus.jpa.bookmanager.domain.UserHistory;
 
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -147,7 +149,6 @@ class UserRepositoryTest {
         System.out.println("to-be : " + userRepository.findAll().get(0));
     }
 
-    
     @Test
     void userHistoryTest() {
         User user = new User();
@@ -163,6 +164,29 @@ class UserRepositoryTest {
         userHistoryRepository.findAll().forEach(System.out::println);
     }
 
+    @Test
+    void userRelationTest() {
+        User user = new User();
+        user.setName("ben");
+        user.setEmail("ben@email.com");
+        user.setGender(Gender.MALE);
+        userRepository.save(user); // insert
+
+        user.setName("daniel");
+        userRepository.save(user); // update
+
+        user.setEmail("daniel@email.com");
+        userRepository.save(user); // update
+
+        // userHistoryRepository.findAll().forEach(System.out::println);
+
+        // List<UserHistory> result = userHistoryRepository.findByUserId(
+        //     userRepository.findByEmail("daniel@email.com").getId());
+        
+        List<UserHistory> result = userRepository.findByEmail("daniel@email.com").getUserHistories();
+
+        result.forEach(System.out::println);
+    }
 
 }
 

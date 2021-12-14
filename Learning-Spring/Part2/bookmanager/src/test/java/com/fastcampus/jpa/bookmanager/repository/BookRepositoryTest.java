@@ -15,8 +15,10 @@ public class BookRepositoryTest {
     @Test
     void bookTest() {
         Book book = new Book();
-        book.setBookName("Jpa Study Package");
-        book.setAuthor("FastCampus");
+        book.setName("Jpa Study Package");
+        book.setAuthorId(1L);
+        book.setPublisherId(1L);
+        
         bookRepository.save(book);
 
         System.out.println(bookRepository.findAll());

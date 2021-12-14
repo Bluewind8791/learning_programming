@@ -1,13 +1,19 @@
 package com.fastcampus.jpa.bookmanager.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
-import com.fastcampus.jpa.bookmanager.domain.listener.Auditable;
 import com.fastcampus.jpa.bookmanager.domain.listener.UserEntityListener;
 
 import lombok.AllArgsConstructor;
@@ -37,10 +43,10 @@ import lombok.ToString;
 @EntityListeners(value = {UserEntityListener.class})
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity implements Auditable {
+public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
@@ -52,28 +58,7 @@ public class User extends BaseEntity implements Auditable {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    // @Column(updatable = false)
-    // @CreatedDate
-    // private LocalDateTime createdAt;
-
-    // @LastModifiedDate
-    // private LocalDateTime updatedAt;
-
-    // @Transient
-    // private String testData;
-
-    // @OneToMany(fetch = FetchType.EAGER)
-    // private List<Address> address;
-
-    // @PrePersist
-    // public void prePersist() {
-    //     this.createdAt = LocalDateTime.now();
-    //     this.updatedAt = LocalDateTime.now();
-    // }
-
-    // @PreUpdate
-    // public void preUpdate() {
-    //     this.updatedAt = LocalDateTime.now();
-    // }
-
+    @OneToMany(fetch = FetchType.EAGER) // LazyInitializationException
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private List<UserHistory> userHistories = new ArrayList<>();
 }

@@ -1,15 +1,11 @@
 package com.fastcampus.jpa.bookmanager.domain;
 
-import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.fastcampus.jpa.bookmanager.domain.listener.Auditable;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,30 +18,22 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Book extends BaseEntity implements Auditable {
+public class Book extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bookName;
-    private String author;
+    private String Name;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private String category;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private Long authorId; // FK
 
-    // @PrePersist
-    // public void prePersist() {
-    //     this.createdAt = LocalDateTime.now();
-    //     this.updatedAt = LocalDateTime.now();
-    // }
+    private Long publisherId; // FK
 
-    // @PreUpdate
-    // public void preUpdate() {
-    //     this.updatedAt = LocalDateTime.now();
-    // }
+    @OneToOne(mappedBy = "book")
+    @ToString.Exclude // toString을 제거하지않으면, 순환참조가 되어서 stack overflow error가 걸리게됨
+    private BookReviewInfo bookReviewInfo;
 
 }

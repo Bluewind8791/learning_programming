@@ -60,7 +60,7 @@ public interface UserHistoryRepository extends JpaRepository<UserHistory, Long> 
 }
 ```
 
-Testing class 에서 
+Testing class 에서
 
 ```java
 List<UserHistory> result = userHistoryRepository.findByUserId(
@@ -87,3 +87,8 @@ public class User extends BaseEntity {
 
 - JoinColumn의 name으로 필드명 지정.
 - insertable과 updatable을 false로 지정함으로써 read only 속성으로 바꿈.
+
+---
+
+## N:1 연관관계 살펴보기
+

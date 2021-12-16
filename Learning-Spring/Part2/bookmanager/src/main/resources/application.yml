@@ -3,7 +3,9 @@ spring:
     console:
       enabled: true
   jpa:
+    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        format_sql: true # 압축된 쿼리를 읽기 좋게 포멧
+  

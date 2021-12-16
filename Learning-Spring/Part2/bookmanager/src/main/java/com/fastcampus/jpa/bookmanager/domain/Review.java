@@ -16,16 +16,24 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class UserHistory extends BaseEntity {
+public class Review extends BaseEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String email;
+    private String title;
 
+    private String content;
+
+    private float score;
+
+    // user_id
     @ManyToOne
-    @ToString.Exclude // for avoiding stackOverFlowError
     private User user;
+
+    // book_id
+    @ManyToOne
+    private Book book;
+
 }

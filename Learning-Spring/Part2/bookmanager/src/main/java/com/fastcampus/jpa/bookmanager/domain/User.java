@@ -61,4 +61,9 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER) // LazyInitializationException
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private List<UserHistory> userHistories = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private List<Review> reviews = new ArrayList<>();
 }

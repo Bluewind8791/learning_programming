@@ -92,3 +92,24 @@ public class User extends BaseEntity {
 
 ## N:1 연관관계 살펴보기
 
+@ManyToOne annotation 사용
+
+---
+
+## N:N 연관관계 살펴보기
+
+```sql
+create table author_books (
+   author_id bigint not null,
+    books_id bigint not null
+)
+```
+
+중간 table이 생성됨.
+
+- 주문 시스템인 경우 'User' 와 'Product' table이 존재.  
+- 'User' / 'Product' -> @ManyToMany relationship.  
+- 그럼 'user_products' 라는 중간테이블이 생성  
+  - 'Order' 라는 Entity를 만들어서 중간테이블로 처리.
+  - 'User' 과 'Order' 의 관계는 1:n
+  - 'Product' 와 'Order'의 관계는 n:1

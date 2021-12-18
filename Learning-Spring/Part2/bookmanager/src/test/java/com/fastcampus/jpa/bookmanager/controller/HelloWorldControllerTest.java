@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
+// @MockBean(JpaMetamodelMappingContext.class) - 해결 첫번째
 @WebMvcTest
 public class HelloWorldControllerTest {
     

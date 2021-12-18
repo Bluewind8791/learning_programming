@@ -111,5 +111,5 @@ create table author_books (
 - 'User' / 'Product' -> @ManyToMany relationship.  
 - 그럼 'user_products' 라는 중간테이블이 생성  
   - 'Order' 라는 Entity를 만들어서 중간테이블로 처리.
-  - 'User' 과 'Order' 의 관계는 1:n
-  - 'Product' 와 'Order'의 관계는 n:1
+  - 'User' 과 'Order' 의 관계는 1:n 으로 설정.
+  - 'Product' 와 'Order'의 관계는 1:n 으로 설정.

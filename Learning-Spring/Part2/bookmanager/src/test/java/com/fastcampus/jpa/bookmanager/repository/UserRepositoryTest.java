@@ -4,6 +4,8 @@ package com.fastcampus.jpa.bookmanager.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.fastcampus.jpa.bookmanager.domain.Gender;
 import com.fastcampus.jpa.bookmanager.domain.User;
 import com.fastcampus.jpa.bookmanager.domain.UserHistory;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Sort.Order;
 
 
 @SpringBootTest
+@Transactional
 class UserRepositoryTest {
 
     @Autowired
@@ -102,9 +105,7 @@ class UserRepositoryTest {
 
     @Test
     void enumTest() {
-        User user = new User();
-        user.setEmail("martin@fastcampus.com");
-        user.setName("martin");
+        User user = userRepository.findById(1L).orElseThrow(RuntimeException::new);
         user.setGender(Gender.MALE);
 
         userRepository.save(user);

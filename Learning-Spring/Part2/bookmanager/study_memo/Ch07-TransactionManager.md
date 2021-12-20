@@ -92,6 +92,8 @@ public class BookServiceTest {
 
 이는 ACID의 트랜잭션의 **All or Nothing** 특성처럼, 일관성있게 처리됨을 알 수 있다.
 
+---
+
 RuntimeException을 Exception으로 바꾸면, Transactional 을 처리를 해도 결과값이 나온다.
 
 RuntimeException은 transaction안에서 발생하면 반용 내용이 rollback되고,  

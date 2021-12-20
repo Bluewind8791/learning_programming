@@ -3,7 +3,10 @@
 import org.springframework.data.domain.Page;  
 import org.springframework.data.domain.Pageable;
 
-pageable은 paging에 대한 요청값, page는 응답값.
+- pageable은 paging에 대한 요청값
+- page는 응답값.
+
+---
 
 ## Find with Paging
 

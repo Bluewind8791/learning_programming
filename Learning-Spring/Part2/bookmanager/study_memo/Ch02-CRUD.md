@@ -2,8 +2,9 @@
 
 ## Simple Jpa Repository
 
+### ■ findAll()
+
 ```java
-// findAll() table의 전체값을 가져오는 메소드
 userRepository.save(new User()); // save() 
 userRepository.findAll().forEach(System.out::println);
 List<User> users = userRepository.findAll(Sort.by(Direction.DESC, "name"));
@@ -16,14 +17,22 @@ List<User> users = userRepository.findAll();
 users.forEach(System.out::println);
 ```
 
-### findById()
+table의 전체값을 가져오는 메소드
+
+---
+
+### ■ findById()
 
 ```java
 Optional<User> user = userRepository.findById(1L);
 System.out.println(user);
 ```
 
-### flush()
+의미 그대로 Id(PK)값을 통하여 DB에서 찾음.
+
+---
+
+### ■ flush()
 
 ```java
 userRepository.save(new User("name", "email"));
@@ -32,33 +41,43 @@ userRepository.flush();
 userRepository.findAll().forEach(System.out::println);
 ```
 
-### count()
+수동으로 영속화를 시킴. 자세한 내용은 뒤의 영속화 부분에서...
+
+---
+
+### ■ count()
 
 ```java
 long count = userRepository.count();
 System.out.println(count);
 ```
 
-DB의 수 return
+DB의 수를 return 한다.
 
-### existsById(index)
+---
+
+### ■ existsById()
 
 ```java
 boolean exits = userRepository.existsById(1L);
 System.out.println(exits);
 ```
 
-index가 존재하는지 boolean으로 return
+해당 id가 존재하는지 boolean으로 return 한다.
 
-### delete
+---
+
+### ■ delete
 
 ```java
 userRepository.delete(userRepository.findById(1L).orElseThrow(RuntimeException::new));
 ```
 
-entity must not be null
+entity must not be null 이여야 하며, 해당 id에 해당하는 db값을 삭제한다.
 
-### deleteById(index)
+---
+
+### ■ deleteById(index)
 
 ```java
 userRepository.deleteById(1L);
@@ -66,15 +85,19 @@ userRepository.deleteById(1L);
 
 select query -> delete
 
-### deleteAll()
+---
+
+### ■ deleteAll()
 
 ```java
 userRepository.deleteAll();
 ```
 
-findAll()후에 각 element를 delete
+findAll()후에 각 element를 delete 한다.
 
-### deleteAllInBatch()
+---
+
+### ■ deleteAllInBatch()
 
 ```java
 userRepository.deleteAllInBatch(userRepository.findAllById(Lists.newArrayList(1L, 3L)));
@@ -82,6 +105,7 @@ userRepository.deleteAllInBatch(userRepository.findAllById(Lists.newArrayList(1L
 
 query를 만들고 delete 실행, 쿼리 한번만 실행
 
+---
 ---
 
 ## Page
@@ -139,3 +163,5 @@ user.setEmail("updated@email.com");
 
 userRepository.save(user);
 ```
+
+영속화를 시킴. 해당 내용은 Persistence에 자세하게 다룬다.

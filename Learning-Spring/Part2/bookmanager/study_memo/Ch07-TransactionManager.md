@@ -168,15 +168,19 @@ put이라는 메소드에 진입하는 순간 이 bean 내부로 들어왔으며
 - **DEFAULT** :
   - DB의 default 격리단계.
   - My-SQL의 경우에는 default 단계가 'REAPEATABLE_READ' 단계이다.
+
 - 1단계 **READ_UNCOMMITTED** :
   - 아직 commit 되지 않은 데이터를 읽을 수 있는 단계. (dirty read)
+
 - 2단계 **READ_COMMITTED** :
   - 1단계에서 발생하였던 dirty read의 현상이 없어지며, 커밋과 롤백에 맞춰서 의도한대로 로직이 동작함.
   - 하지만 update나 insert 작업을 하지않았는데, 반복적으로 조회를 하는데 중간에 값이 변경되어버리는 경우가 발생함. 이런 경우를 **unreapeatable read**라고 하며, 조작은 하지 않았지만 트랜잭션 내에서 조회값이 달라질수도 있는 현상이다.
+
 - 3단계 **REPEATABLE_READ** :
   - Unreapeatable read 상태를 해결하기 위하여 나온 단계. 즉 반복적으로 조회를 하더라도 항상 같은 값이 도출됨.
   - 조회하는 도중에 상태값을 update하고 commit 하더라도, 별도의 스냅샷으로 커밋된 데이터를 직접 가져오는것이 아니라, 트랜잭션이 시작할때에 조회했던 데이터를 별도로 저장하고 있다가 이 트랜잭션이 끝나기 전까진 이 정보를 지속적으로 return 하게 됨.
   - 여기서도 문제가 발생하는데, 트랜잭션 내에서 한개의 레코드를 처리하는데 실제로는 두개의 레코드가 처리될 수 있따. 이렇게 경우에 따라서 데이터가 안보이는데 처리되는것을 **팬텀 리드**라는 현상이라 한다.
+
 - 4단계 **SERIALIZABLE** :
   - 역시나 팬텀 리드현상을 해결하기 위하여 나온 단계.
   - commit이 일어나지않은 트랜잭션이 존재하게되면 lock을 통하여 waiting을 하게됨. 그래서 commit이 실행되어야만 추가적인 로직 진행을 하게된다.
@@ -187,15 +191,56 @@ put이라는 메소드에 진입하는 순간 이 bean 내부로 들어왔으며
 
 ## 트랜잭션 전파 propagation()
 
-propagation:  the act of producing a new plant from a parent plant
+propagation:  the act of producing a new plant from a parent plant.
 
-- REQUIRED :
+- **REQUIRED** :
   - default 값.
   - 만약 기존의 사용하게되던 트랜잭션이있다면 그 트랜잭션을 사용하고, 없다면 새로운 트랜잭션을 생성해서 사용한다.
   - save 메소드가 이 REQUIRED로 적용되어있음.
+  - 정말 필요한 경우가 아니라면 default 값을 사용하는것을 지향하는 추세.
 
-- SUPPORT
-- REQUIRES_NEW
-- NOT_SUPPORTED
-- NEVER
-- NESTED
+- **REQUIRES_NEW** :
+  - 있던 없던 상관없이 무조건 새로운 트랜잭션을 생성함.
+  - 트랜잭션을 만든다는 것은, 호출하는 쪽의 커밋/롤백과는 관련없이 자체적으로 커밋과 롤백을 진행하는 의미.
+  - 서로 완전히 독립적인 트랜잭션을 활용함.
+
+- **NESTED**:
+  - 별도의 트랜잭션을 생성하는것이 아니라 호출하는쪽의 트랜잭션을 그대로 활용함.
+  - 하나의 트랜잭션이지만 약간은 분리시켜서 동작시킬 수 있다.
+  - 아래의 예제의 경우에는 book은 save까지 정상적으로 트랜잭션이 끝나며 author는 실패하기때문에 book은 정상적으로 commit 되나 author은 rollback되며,  
+  반대로 book이 실패하고 author가 성공하게 된다면, 동일한 트랜잭션이기 때문에 둘 다 rollback 처리가 된다.
+  - 즉 save point 까지의 성공은 보장을 하는 셈.
+
+  ```java
+  @Transactional(propagation = Propagation.NESTED)
+  void putBookAndAuthor() {
+      Book book = new Book();
+      book.setName("Starting JPA Book");
+      bookRepository.save(book);
+  
+      try {
+          authorService.putAuthor();
+      } catch (RuntimeException e) {
+  }
+  ```
+
+- **SUPPORTS** :
+  - 호출하는쪽에서 트랜잭션이 있다면 해당 트랜잭션을 재활용한다. 하지만 없다면 새로 생성하지않는다.
+  - 트랜잭션이 있으면 지원해주는 전파.
+
+- **NOT_SUPPORTED** :
+  - 호출하는쪽에서 트랜잭션을 가지고 있으면 트랜잭션과 별개로 잠시 멈춘다.
+  - 즉, 해당 영역은 트랜잭션 없이 동작하도록 설정함.
+
+- **MANDATORY** :
+  - meaning: required by law or rules;
+  - 필수적으로 트랜잭션이 존재해야하며, 없으면 오류를 발생함.
+
+- **NEVER** :
+  - 트랜잭션이 없어야함. 하지만 트랜잭션이 존재한다면 오류를 발생함.
+
+---
+
+## Transaction Annotation Scope
+
+만약 class annotation, method annotation이 동시에 있다면, method annotation이 우선적으로 실행되며, class scope로 걸려있다면 각 method에 annotation이 걸려있는 효과와 같음.

@@ -2,9 +2,8 @@ package com.fastcampus.jpa.bookmanager.service;
 
 import javax.persistence.EntityManager;
 
-import com.fastcampus.jpa.bookmanager.domain.Author;
 import com.fastcampus.jpa.bookmanager.domain.Book;
-import com.fastcampus.jpa.bookmanager.repository.AuthorRepository;
+// import com.fastcampus.jpa.bookmanager.repository.AuthorRepository;
 import com.fastcampus.jpa.bookmanager.repository.BookRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ public class BookService {
     
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private AuthorRepository authorRepository;
+    // @Autowired
+    // private AuthorRepository authorRepository;
     @Autowired
     private EntityManager entityManager;
     @Autowired

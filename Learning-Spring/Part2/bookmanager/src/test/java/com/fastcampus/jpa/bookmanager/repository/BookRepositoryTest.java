@@ -49,6 +49,31 @@ public class BookRepositoryTest {
         System.out.println("Publisher : " + user.getReviews().get(0).getBook().getPublisher());
     }
 
+    @Test
+    @Transactional // lazy initialization exception
+    void bookCascadeTest() {
+        Book book = new Book();
+        book.setName("JPA 초격차 패키지");
+
+        bookRepository.save(book); // 영속화
+
+        Publisher publisher = new Publisher();
+        publisher.setName("FastCampus");
+
+        publisherRepository.save(publisher); // 영속화
+
+        book.setPublisher(publisher); // 연관관계 만들기
+        bookRepository.save(book);
+
+        // publisher.getBooks().add(book);
+        publisher.addBook(book); // -> 더 가독성있는 코드를 위하여 메소드를 추가해줌
+        publisherRepository.save(publisher);
+
+        System.out.println("books : " + bookRepository.findAll());
+        System.out.println("publishers : " + publisherRepository.findAll());
+    }
+
+
     private void givenBookAndReview() {
         givenReview(givenUser(), givenBook());
     }

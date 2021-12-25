@@ -2,6 +2,7 @@ package com.fastcampus.jpa.bookmanager.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
@@ -19,8 +20,10 @@ import lombok.Data;
 public class BaseEntity implements Auditable {
 
     @CreatedDate
+    @Column(columnDefinition = "datetime(6) default now(6) comment '생성시간'", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(columnDefinition = "datetime(6) default now(6) comment '수정시간'", nullable = false) // not null type으로 생성
     private LocalDateTime updatedAt;
 }

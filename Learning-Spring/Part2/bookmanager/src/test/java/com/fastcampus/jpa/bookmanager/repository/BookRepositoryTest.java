@@ -1,5 +1,7 @@
 package com.fastcampus.jpa.bookmanager.repository;
 
+import java.time.LocalDateTime;
+
 import com.fastcampus.jpa.bookmanager.domain.Book;
 import com.fastcampus.jpa.bookmanager.domain.Publisher;
 import com.fastcampus.jpa.bookmanager.domain.Review;
@@ -108,6 +110,29 @@ public class BookRepositoryTest {
         // bookRepository.findByCategoryIsNull().forEach(System.out::println);
         // bookRepository.findAllByDeletedFalse().forEach(System.out::println);
         // bookRepository.findByCategoryIsNullAndDeletedFalse().forEach(System.out::println);
+    }
+
+
+    @Test
+    void queryTest() {
+        
+        System.out.println(">>> findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual : " 
+            + bookRepository.findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual(
+                "JPA 초격차 패키지", 
+                LocalDateTime.now().minusDays(1L), 
+                LocalDateTime.now().minusDays(1L)
+            ));
+
+        System.out.println(">>> findByNameRecently : " 
+            + bookRepository.findByNameRecently(
+                "JPA 초격차 패키지", 
+                LocalDateTime.now().minusDays(1L), 
+                LocalDateTime.now().minusDays(1L)
+            ));
+
+        // System.out.println(bookRepository.findBookNameAndCategory());
+        // bookRepository.findBookNameAndCategory().forEach(tuple -> {System.out.println(tuple.get(0) + " : " + tuple.get(1));});
+        bookRepository.findBookNameAndCategory().forEach(b -> {System.out.println(b.getName() + " : " + b.getCategory());});
     }
 
 

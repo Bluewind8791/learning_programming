@@ -1,7 +1,5 @@
 package com.fastcampus.jpa.bookmanager.repository;
 
-import java.time.LocalDateTime;
-
 import com.fastcampus.jpa.bookmanager.domain.Book;
 import com.fastcampus.jpa.bookmanager.domain.Publisher;
 import com.fastcampus.jpa.bookmanager.domain.Review;
@@ -10,6 +8,7 @@ import com.fastcampus.jpa.bookmanager.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -116,23 +115,31 @@ public class BookRepositoryTest {
     @Test
     void queryTest() {
         
-        System.out.println(">>> findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual : " 
-            + bookRepository.findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual(
-                "JPA 초격차 패키지", 
-                LocalDateTime.now().minusDays(1L), 
-                LocalDateTime.now().minusDays(1L)
-            ));
+        // System.out.println(">>> findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual : " 
+        //     + bookRepository.findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual(
+        //         "JPA 초격차 패키지", 
+        //         LocalDateTime.now().minusDays(1L), 
+        //         LocalDateTime.now().minusDays(1L)
+        //     ));
 
-        System.out.println(">>> findByNameRecently : " 
-            + bookRepository.findByNameRecently(
-                "JPA 초격차 패키지", 
-                LocalDateTime.now().minusDays(1L), 
-                LocalDateTime.now().minusDays(1L)
-            ));
+        // System.out.println(">>> findByNameRecently : " 
+        //     + bookRepository.findByNameRecently(
+        //         "JPA 초격차 패키지", 
+        //         LocalDateTime.now().minusDays(1L), 
+        //         LocalDateTime.now().minusDays(1L)
+        //     ));
 
         // System.out.println(bookRepository.findBookNameAndCategory());
         // bookRepository.findBookNameAndCategory().forEach(tuple -> {System.out.println(tuple.get(0) + " : " + tuple.get(1));});
-        bookRepository.findBookNameAndCategory().forEach(b -> {System.out.println(b.getName() + " : " + b.getCategory());});
+        // bookRepository.findBookNameAndCategory().forEach(b -> {System.out.println(b.getName() + " : " + b.getCategory());});
+
+        bookRepository.findBookNameAndCategory(PageRequest.of(1, 1)).forEach(
+            BookNameAndCategory -> System.out.println(BookNameAndCategory.getName() + " : " + BookNameAndCategory.getCategory())
+        );
+
+        bookRepository.findBookNameAndCategory(PageRequest.of(0, 1)).forEach(
+            BookNameAndCategory -> System.out.println(BookNameAndCategory.getName() + " : " + BookNameAndCategory.getCategory())
+        );
     }
 
 

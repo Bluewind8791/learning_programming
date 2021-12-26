@@ -88,7 +88,7 @@ public class BookNameAndCategory {
 }
 ```
 
-BookRepository는 아래와 같이
+BookRepository는 아래와 같이 @Query value를 지정해준다. class 이름을 지정할때는 directory까지 지정해줘야한다.
 
 ```java
 public interface BookRepository extends JpaRepository<Book, Long>{
@@ -108,3 +108,25 @@ void queryTest() {
 ---
 
 ## Paging 기능
+
+findAll() 값에 Pageable pageable 을 넣게되면 페이지 형식의 리턴값을 줘서 페이징을 할수있도록 함.  
+마찬가지로 @Query 에서도 Pageable 기능을 사용하면 페이징 기능을 사용할 수 있다.
+
+```java
+@Query(value = "select new com.fastcampus.jpa.bookmanager.repository.dto.BookNameAndCategory(b.name, b.category) from Book b")
+Page<BookNameAndCategory> findBookNameAndCategory(Pageable pageable);
+```
+
+↑ 위와 같이 repository의 메소드에 Pageable 인자를 추가해준다.
+
+```java
+bookRepository.findBookNameAndCategory(PageRequest.of(1, 1)).forEach(
+    BookNameAndCategory -> System.out.println(BookNameAndCategory.getName() + " : " + BookNameAndCategory.getCategory())
+);
+
+bookRepository.findBookNameAndCategory(PageRequest.of(0, 1)).forEach(
+    BookNameAndCategory -> System.out.println(BookNameAndCategory.getName() + " : " + BookNameAndCategory.getCategory())
+);
+```
+
+첫번째 테스트 메소드는 PageRequest를 활용하여 2번째 페이지에서 찾고, 두번째 테스트 메소드는 첫번째 페이지에서 가져온다.

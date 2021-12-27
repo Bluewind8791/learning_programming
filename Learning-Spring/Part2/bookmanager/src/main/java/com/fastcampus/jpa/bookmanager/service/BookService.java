@@ -1,5 +1,7 @@
 package com.fastcampus.jpa.bookmanager.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import com.fastcampus.jpa.bookmanager.domain.Book;
@@ -66,5 +68,12 @@ public class BookService {
         // Book book = bookRepository.findById(id).get();
         // book.setName("Will be changed?");
         // bookRepository.save(book);
+    }
+
+    @Transactional
+    public List<Book> getAll() {
+        List<Book> books = bookRepository.findAll();
+        books.forEach(System.out::println);
+        return books;
     }
 }

@@ -4,8 +4,10 @@ package com.fastcampus.jpa.bookmanager.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
+import com.fastcampus.jpa.bookmanager.domain.Address;
 import com.fastcampus.jpa.bookmanager.domain.Gender;
 import com.fastcampus.jpa.bookmanager.domain.User;
 import com.fastcampus.jpa.bookmanager.domain.UserHistory;
@@ -28,6 +30,9 @@ class UserRepositoryTest {
 
     @Autowired
     private UserHistoryRepository userHistoryRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
     void crud() { // create, read, update, delete
@@ -189,6 +194,57 @@ class UserRepositoryTest {
         result.forEach(System.out::println);
 
         System.out.println("UserHistory.getUser() : " + userHistoryRepository.findAll().get(0));
+    }
+
+    @Test
+    void embedTest() {
+        userRepository.findAll().forEach(System.out::println);
+
+        User user = new User();
+        user.setName("steve");
+        user.setHomeAddress(new Address("서울시", "노원구", "한글비석로", "11111"));
+        user.setCompanyAddress(new Address("서울시", "성동구", "성수2로", "22222"));
+
+        userRepository.save(user);
+
+        User user1 = new User();
+        user1.setName("josh");
+        user1.setHomeAddress(null);
+        user1.setCompanyAddress(null);
+
+        userRepository.save(user1);
+
+        User user2 = new User();
+        user2.setName("jordan");
+        user2.setHomeAddress(new Address());
+        user2.setCompanyAddress(new Address());
+
+        userRepository.save(user2);
+
+        userRepository.findAll().forEach(System.out::println);
+        userHistoryRepository.findAll().forEach(System.out::println);
+    }
+
+    @Test
+    void findAllRawRecord(){
+        User user1 = new User();
+        user1.setName("josh");
+        user1.setHomeAddress(null);
+        user1.setCompanyAddress(null);
+
+        userRepository.save(user1);
+
+        User user2 = new User();
+        user2.setName("jordan");
+        user2.setHomeAddress(new Address());
+        user2.setCompanyAddress(new Address());
+
+        userRepository.save(user2);
+
+        entityManager.clear(); // 영속성 컨텍스트 캐쉬를 제거
+
+        userRepository.findAll().forEach(System.out::println);
+        userRepository.findAllRawRecord().forEach(a -> System.out.println(a.values()));
     }
 
 }

@@ -81,7 +81,7 @@ public class User extends BaseEntity {
     private Address companyAddress;
 
 
-    @OneToMany(fetch = FetchType.EAGER) // LazyInitializationException
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @Builder.Default
     private List<UserHistory> userHistories = new ArrayList<>();

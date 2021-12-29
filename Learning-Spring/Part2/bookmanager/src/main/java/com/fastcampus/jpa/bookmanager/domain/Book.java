@@ -1,6 +1,5 @@
 package com.fastcampus.jpa.bookmanager.domain;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -18,3 +18,7 @@ insert into book(`id`, `name`, `publisher_id`, `deleted`, `status`) values (3, '
 
 insert into review(`id`, `title`, `content`, `score`, `user_id`, `book_id`) values (1, '내 인생을 바꾼 책', '너무너무 좋았어요', 5.0, 1, 1);
 insert into review(`id`, `title`, `content`, `score`, `user_id`, `book_id`) values (2, '너무 진도가 빨라요', '조금 벌로였어요', 3.0, 2, 2);
+
+insert into comment(`id`, `comment`, `review_id`) values (1, '저도 좋았어요', 1);
+insert into comment(`id`, `comment`, `review_id`) values (2, '저는 별로였어요', 1);
+insert into comment(`id`, `comment`, `review_id`) values (3, 'it was not good', 2);

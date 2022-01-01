@@ -18,5 +18,6 @@ public class Address {
 
     @Column(name = "address_detail")
     private String detail;      // 상세주소
+    
     private String zipCode;     // 우편번호
 }

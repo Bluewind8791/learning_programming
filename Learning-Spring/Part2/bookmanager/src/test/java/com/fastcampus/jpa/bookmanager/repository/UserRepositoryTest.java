@@ -1,6 +1,5 @@
 package com.fastcampus.jpa.bookmanager.repository;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -221,8 +220,12 @@ class UserRepositoryTest {
 
         userRepository.save(user2);
 
+        // entityManager.clear();
+
         userRepository.findAll().forEach(System.out::println);
         userHistoryRepository.findAll().forEach(System.out::println);
+
+        userRepository.findAllRawRecord().forEach(a -> System.out.println(a.values()));
     }
 
     @Test

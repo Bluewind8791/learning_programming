@@ -236,6 +236,11 @@ protected void configure(HttpSecurity http) throws Exception {
 
 일반적으로 관리자는 user의 권한도 함께 가지고있는 경우가 많다.
 
+roleHierarchy(역할 계층)를 통하여 역할을 설정해주면 관리자도 유저의 권한을 가질 수 있게된다.  
+예를 들어 ROLE_A > ROLE_B > ROLE_C 로 설정해두면 ROLE_A는 B, C의 모든 권한을 갖을 수 있다.
+
+SecurityConfig class에 아래와 같이 roleHierarchy를 설정한다.
+
 ```java
 @Bean
 RoleHierarchy roleHierarchy() {
@@ -245,8 +250,115 @@ RoleHierarchy roleHierarchy() {
 }
 ```
 
-roleHierarchy(역할 계층)를 통하여 역할을 설정해주면 관리자도 유저의 권한을 가질 수 있게된다.
+RoleHierarchyImpl을 생성하고, 역할 계층을 set하고 리턴한다.
+그리고 해당 메서드를 bean으로 등록해두면 스프링이 인식하여 동작한다.
 
 ---
 
-## authenticationDetailsSource
+## **authenticationDetailsSource**
+
+authenticationDetailsSource는 auth에서 details에 대한 정보를 custom할때 사용한다.
+
+먼저 어떤 정보들을 custom 할것인지 RequestInfo 객체를 만든다.
+
+```java
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class RequestInfo {
+
+    private String remoteIp;
+    private String sessionId;
+    private LocalDateTime loginTime;
+}
+```
+
+우리는 remoteIp와 sessionId, loginTime을 기록하는것으로 설정한다.
+
+그리고 AuthenticationDetailsSource을 구현할 클래스를 아래와 같이 만드는데,
+
+```java
+@Component
+public class CustomAuthDetails implements AuthenticationDetailsSource<HttpServletRequest, RequestInfo> {
+    
+    @Override
+    public RequestInfo buildDetails(HttpServletRequest request) {
+        return RequestInfo.builder()
+            .remoteIp(request.getRemoteAddr())
+            .sessionId(request.getSession().getId())
+            .loginTime(LocalDateTime.now())
+            .build()
+        ;
+    }
+}
+```
+
+AuthenticationDetailsSource는 HttpServletRequest와 Details를 담을 dto(객체)가 필요하다.
+
+담을 dto는 위에 RequestInfo를 만들어 두었으니 타입으로 지정하고, buildDetails를 오버라이딩하여
+dto에 지정하였던 변수들을 지정하고 빌드하여 리턴한다.
+
+SecurityConfig 에서는
+
+```java
+@EnableWebSecurity(debug = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final CustomAuthDetails customAuthDetails;
+
+    public SecurityConfig(CustomAuthDetails customAuthDetails) {
+        this.customAuthDetails = customAuthDetails;
+    }
+    ...
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests(request->{
+                request
+                    ...
+            })
+            .formLogin(
+                login -> login.loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/", false)
+                .failureUrl("/login-error")
+                .authenticationDetailsSource(customAuthDetails) // *
+            )
+            ...
+    }
+    ...
+}
+```
+
+CustomAuthDetails 를 final로 지정하여 generate constructor 을 통하여 생성자를 만들고, authenticationDetailsSource의 파라미터로 customAuthDetails를 넘겨준다.
+
+```json
+{
+  "authorities": [
+    {
+      "authority": "ROLE_ADMIN"
+    }
+  ],
+  "details": {
+    "remoteIp": "127.0.0.1",
+    "sessionId": "CE195685E5809C7C55CC6A973BCF350E",
+    "loginTime": "2022-01-04T16:12:47.5583688"
+  },
+...
+```
+
+위와 같이 details가 바뀌는것을 알 수 있다.
+
+---
+
+### Auth page 만들기
+
+```java
+@ResponseBody // json 객체로 내려보내기
+@GetMapping("/auth")
+public Authentication auth() {
+    return SecurityContextHolder.getContext().getAuthentication();
+}
+```

@@ -3,10 +3,9 @@ package com.sp.fc.web.config;
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
 
 
 @Data

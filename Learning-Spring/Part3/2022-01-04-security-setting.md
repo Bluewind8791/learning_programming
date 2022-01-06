@@ -1,4 +1,9 @@
-# 페이지에 Security 설정하기
+---
+title: "[Spring Security] 페이지에 Security 설정하기"
+date: 2022-01-04
+---
+
+## Task
 
 - thymeleaf 에 대한 의존성 추가
 - bootstrap 을 이용해 기본 페이지 제작

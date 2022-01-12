@@ -1,6 +1,6 @@
 # 학생과 선생님 로그인 구현
 
-![map](/4-1-map.png)
+![map](/task-map.png)
 
 - Student는 로그인을 통하여 StudentAuthenticationProvider을 통하여 StudentAuthenticationToken을 발급받는다.
 - Teacher은 로그인을 통하여 TeacherAuthenticationProvider을 통하여 TeacherAuthenticationToken을 발급받는다.
@@ -275,3 +275,96 @@ protected void configure(HttpSecurity http) throws Exception {
 
 - 기존의 formlogin은 제외하고 필터를 만들어서 쓰는데, authenticationManager를 직접 bean 에서 받아다가 CustomLoginFilter에 넣도록 한다.
 - 그리고 addFilterAt를 하는데, 커스텀 필터를 UsernamePasswordAuthenticationFilter가 있던 자리에 그대로 꽂아준다.
+
+
+```java
+public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
+    ...
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
+        ...
+        String type = request.getParameter("type");
+        if (type == null || !type.equals("teacher")) {
+            // student
+            StudentAuthenticationToken token = StudentAuthenticationToken.builder()
+                .credentials(username).build();
+            return this.getAuthenticationManager().authenticate(token);
+        } else {
+            // teacher
+            TeacherAuthenticationToken token = TeacherAuthenticationToken.builder()
+                .credentials(username).build();
+            return this.getAuthenticationManager().authenticate(token);
+        }
+    }
+}
+```
+
+- request에서 가져오면 getParameter로 type 값을 가져온다. 이 type 값을 통하여 student와 teacher을 구분할 수 있으며, token을 각각 다른 토큰으로 배정한다.
+- 이렇게 처리된 token을 authentication manager 에게 넘긴다.
+
+```java
+public class TeacherManager implements AuthenticationProvider, InitializingBean {
+    ...
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        TeacherAuthenticationToken token = (TeacherAuthenticationToken) authentication;
+
+        if (teacherDB.containsKey(token.getCredentials())) {
+            Teacher teacher = teacherDB.get(token.getCredentials());
+            return TeacherAuthenticationToken.builder()
+                .principal(teacher)
+                .details(teacher.getUsername())
+                .authenticated(true)
+                .build();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication == TeacherAuthenticationToken.class;
+    }
+    ...
+```
+
+- 이렇게 받은 Token을 type이 teacher인 경우에는 Auth Manager 인 TeacherManger의 클래스에서 넘겨받게 된다.
+
+- 그러면 custom 된 TeahcerAuthenticationToken 으로 토큰을 넘겨받게 되고, 넘겨받은 credentials 를 가지고 token을 검증해서 통행증을 발급하게 된다.
+
+- 결과적으로 CustomLoginFilter를 거쳐서 TeacherManager의 Provider로 바로 가서 인증토큰을 받게 된다.
+
+---
+
+하지만 이 custom filter에서는 원래 UsernamePasswordAuthFilter 가 제공하는 기능 중에 defaultSuccessUrl 나 failureUrl 등의 기능이 없다.
+
+```java
+@EnableWebSecurity(debug = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    ...
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        CustomLoginFilter filter = new CustomLoginFilter(authenticationManager());
+        http
+            .authorizeRequests(request->
+                request.antMatchers("/", "/login").permitAll()
+                .anyRequest().authenticated()
+            )
+        .formLogin(login -> 
+            login.loginPage("/login")
+            .permitAll()
+            .defaultSuccessUrl("/", false)
+            .failureUrl("/login-error")
+        )
+        .addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
+        .logout(logout -> logout.logoutSuccessUrl("/"))
+        .exceptionHandling(e -> e.accessDeniedPage("/access-denied"))
+        ;
+    }
+...
+```
+
+원래는 success handler나 failure handler 같은 추가 코딩이 필요하지만, 그냥 formLogin을 enable 하고 써도 큰 문제는 없다.
+
+왜나면 커스텀 필터와 UsernamePasswordAuthFilter 가 둘이 동시에 켜지지만, 커스텀 로그인 필터가 앞에서 동작하기 때문에 큰 문제가 일어나지는 않는다.

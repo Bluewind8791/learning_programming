@@ -5,7 +5,7 @@ date: 2022-01-06
 
 ## **Authentication**
 
-![auth-mech](auth-mech.png)
+![auth-mech](https://gitlab.com/jongwons.choi/spring-boot-security-lecture/-/raw/master/images/fig-6-Authentication.png)
 
 인증(Authentication)은 인증된 결과만 저장하는것이 아니고, **인증하기 위한 정보**와 **인증받기 위한 정보**가 동시에 들어있다.  
 왜냐하면 인증을 제공해줄 제공자(Authentication Provider)가 어떤 인증에 대해서 허가를 내줄 것인지 판단하기 위해서는, 직접 입력된 인증을 보고, 허가된 인증을 내주는 방식이기 때문이다.
@@ -28,7 +28,7 @@ Auth 객체는 SecurityContextHolder를 통하여 세션이 있건 없건 언제
 
 ## **AuthenticationProvider**
 
-![authProvider](authProvider.png)
+![authProvider](https://gitlab.com/jongwons.choi/spring-boot-security-lecture/-/raw/master/images/fig-7-AuthenticationProvider.png)
 
 인증 제공자(AuthenticationProvider)는 기본적으로 Auth를 받아서 인증하고, 인증된 결과를 다시 Auth 객체로 전달한다.
 
@@ -38,7 +38,7 @@ Auth 객체는 SecurityContextHolder를 통하여 세션이 있건 없건 언제
 
 ## **AuthenticationManager**
 
-![authManager](authManager.png)
+![authManager](https://gitlab.com/jongwons.choi/spring-boot-security-lecture/-/raw/master/images/fig-8-AuthenticationManager.png)
 
 - AuthenticationProvider들을 관리하는 interface가 인증 관리자(AuthenticationManager)이고, 이 인증 관리자를 구현한 객체가 ProvideManager 이다.
 - ProviderManager도 여러개 존재할 수 있다.

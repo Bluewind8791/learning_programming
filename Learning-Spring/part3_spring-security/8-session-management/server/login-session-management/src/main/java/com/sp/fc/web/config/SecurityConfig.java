@@ -124,7 +124,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout(logout->
                         logout.logoutSuccessUrl("/"))
                 .exceptionHandling(error->
-                        error.accessDeniedPage("/access-denied")
+                        error
+                            // .accessDeniedPage("/access-denied")
+                            .accessDeniedHandler(new CustomDeniedHandler())
+                            .authenticationEntryPoint(new CustomEntryPoint())
+
                 )
                 .rememberMe(r->r
                         .rememberMeServices(rememberMeServices())

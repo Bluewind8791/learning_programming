@@ -13,11 +13,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-// import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
-@Api(tags = {"This is providing API information Controller"})
+@Api(tags = {"API 정보를 제공하는 Controller"})
 @RestController
 @RequestMapping("/api")
 public class ApiController {
@@ -33,9 +32,9 @@ public class ApiController {
     })
     @GetMapping("/plus/{x}")
     public int plus(
-        // @ApiParam(value = "x value")  -> 대신 ApiImplicitParams 사용
+        // @ApiParam(value = "X value")  //-> 대신 ApiImplicitParams 사용
         @RequestParam int x,
-        // @ApiParam(value = "y value")
+        // @ApiParam(value = "Y value")
         @RequestParam int y) {
         return x + y;
     }

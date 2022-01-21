@@ -5,15 +5,15 @@ class annotation으로 **@Entity**를 추가하면, 메소드에 **@Id** annotat
 ## @GeneratedValue
 
 - Method Annotation
-- @Id만 사용하거나 @GeneratedValue를 함께 사용하는 방법이 있다.
+- `@Id`만 사용하거나 `@GeneratedValue`를 함께 사용하는 방법이 있다.
 - GenerationType 4가지 전략이있다.
 
 ### GenerationType
 
-- IDENTITY : @GeneratedValue(strategy = GenerationType.IDENTITY)  
+- IDENTITY : @GeneratedValue(strategy = GenerationType.IDENTITY)
   - 일반적으로는 MYSQL에서 자주 사용함.
   - 기본키 생성을 데이터베이스에 위임.
-- SEQUENCE : @GeneratedValue(strategy = GenerationType.SEQUENCE)  
+- SEQUENCE : @GeneratedValue(strategy = GenerationType.SEQUENCE)
   - DB Sequence Object 사용.
   - Oracle 등에서 자주 사용.
   - H2 DB 또한 Sequence 사용함.

@@ -6,7 +6,6 @@ import org.springframework.security.access.intercept.aopalliance.MethodSecurityI
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,8 +25,14 @@ public class HomeController {
         return "hello";
     }
 
-    @PreAuthorize("hasRole('USER')")
-    @PostMapping("/greeting/{name}")
+    // @PreAuthorize("hasRole('USER')")
+    // @PostMapping("/greeting/{name}")
+    // public String greeting(@PathVariable String name) {
+    //     return "hello " + securityMessageService.message(name);
+    // }
+
+    @PreAuthorize("@nameCheck.check(#name)")
+    @GetMapping("/greeting/{name}")
     public String greeting(@PathVariable String name) {
         return "hello " + securityMessageService.message(name);
     }

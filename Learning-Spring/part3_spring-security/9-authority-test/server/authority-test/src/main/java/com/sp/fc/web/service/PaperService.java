@@ -23,6 +23,7 @@ public class PaperService implements InitializingBean {
 
     // 자신의 시험지만 가져오게
     public List<Paper> getMyPapers(String username) {
+        // return paperDB.values().stream().collect(Collectors.toList());
         return paperDB.values().stream().filter(
                 paper -> paper.getStudentIds().contains(username)
         ).collect(Collectors.toList());

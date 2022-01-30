@@ -1,5 +1,7 @@
 package com.sp.fc.web.config;
 
+import com.sp.fc.web.service.Paper;
+
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
@@ -39,6 +41,11 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         return getAuthentication().getAuthorities().stream()
             .filter(a -> a.getAuthority().equals("ROLE_TUTOR"))
             .findAny().isPresent();
+    }
+
+    // PaperController 에서 사용 가능
+    public boolean notPrepareState(Paper paper) {
+        return paper.getState() != com.sp.fc.web.service.Paper.State.PREPARE;
     }
     
 }

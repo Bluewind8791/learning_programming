@@ -48,6 +48,23 @@ public class PaperTest extends WebIntegrationTest {
         .build();
 
 
+    @DisplayName("4. 교장선생님은 모든 시험지를 볼 수 있다.")
+    @Test
+    void test_4() {
+        paperService.setPaper(paper1);
+        paperService.setPaper(paper2);
+        paperService.setPaper(paper3);
+
+        client = new TestRestTemplate("primary", "1111");
+        ResponseEntity<List<Paper>> response = client.exchange(uri("/paper/getPapersByPrimary"), 
+            HttpMethod.GET, null, new ParameterizedTypeReference<List<Paper>>() {
+            });
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(3, response.getBody().size());
+        System.out.println(response.getBody());
+    }
+
 
     @DisplayName("3. 본인의 시험지라도 출제중이면 접근 불가")
     @Test
@@ -57,7 +74,8 @@ public class PaperTest extends WebIntegrationTest {
         client = new TestRestTemplate("user2", "1111");
         ResponseEntity<Paper> response = client.exchange(uri("/paper/get/2"), 
             HttpMethod.GET, null, new ParameterizedTypeReference<Paper>() {
-            });
+            }
+        );
         
         assertEquals(403, response.getStatusCodeValue());
     }

@@ -24,8 +24,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     }
 
     @Override
-    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
-            Object permission) {
+    public boolean hasPermission(Authentication authentication, 
+                                 Serializable targetId, 
+                                 String targetType,
+                                 Object permission) {
         
         Paper paper = paperService.getPaper((long)targetId);
         if (paper == null) throw new AccessDeniedException("시험지가 존재하지 않습니다.");

@@ -1,6 +1,7 @@
 package com.sp.fc.web.service;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -14,7 +15,6 @@ public class PaperService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-
     }
 
     public void setPaper(Paper paper){
@@ -22,6 +22,7 @@ public class PaperService implements InitializingBean {
     }
 
     // 자신의 시험지만 가져오게
+    @PostFilter("notPrepareSate(filterObject)")
     public List<Paper> getMyPapers(String username) {
         // return paperDB.values().stream().collect(Collectors.toList());
         return paperDB.values().stream().filter(
@@ -31,5 +32,9 @@ public class PaperService implements InitializingBean {
 
     public Paper getPaper(Long paperId) {
         return paperDB.get(paperId);
+    }
+
+    public List<Paper> getAllPapers() {
+        return paperDB.values().stream().collect(Collectors.toList());
     }
 }

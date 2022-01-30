@@ -31,7 +31,7 @@ public class HomeController {
     //     return "hello " + securityMessageService.message(name);
     // }
 
-    @PreAuthorize("@nameCheck.check(#name)")
+    // @PreAuthorize("@nameCheck.check(#name)")
     @GetMapping("/greeting/{name}")
     public String greeting(@PathVariable String name) {
         return "hello " + securityMessageService.message(name);

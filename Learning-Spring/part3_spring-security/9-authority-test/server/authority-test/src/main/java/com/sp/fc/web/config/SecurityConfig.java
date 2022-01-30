@@ -41,6 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("1111")
                 .roles("USER", "TUTOR")
             )
+            .withUser(
+                User.withDefaultPasswordEncoder()
+                .username("primary")
+                .password("1111")
+                .roles("USER", "PRIMARY")
+            )
             ;
     }
 
@@ -49,11 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     AccessDecisionManager filterAccessDecisionManager() {
         return new AccessDecisionManager() {
             @Override
-            public void decide(Authentication authentication, Object object,
-                    Collection<ConfigAttribute> configAttributes)
-                    throws AccessDeniedException, InsufficientAuthenticationException {
-                // throw new AccessDeniedException("접근 금지");
-                return ;
+            public void decide(Authentication authentication, 
+                               Object object,
+                               Collection<ConfigAttribute> configAttributes)
+                               throws AccessDeniedException, InsufficientAuthenticationException {
+
+                throw new AccessDeniedException("접근 금지");
+                // return ;
             }
 
             @Override

@@ -9,7 +9,6 @@ import com.sp.fc.web.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +31,12 @@ public class PaperController {
     @GetMapping("/mypapers")
     public List<Paper> myPapers(@AuthenticationPrincipal User user) {
         return paperService.getMyPapers(user.getUsername());
+    }
+
+    @Secured({"ROLE_USER", "RUN_AS_PRIMARY"})
+    @GetMapping("/allpapers")
+    public List<Paper> allPapers(@AuthenticationPrincipal User user) {
+        return paperService.getAllPapers();
     }
 
     // @PreAuthorize("hasPermission(#paperId, 'paper', 'read')")

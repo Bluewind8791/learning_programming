@@ -28,10 +28,12 @@ public class CustomVoter implements AccessDecisionVoter<MethodInvocation> {
         // "SCHOOL_PRIMARY" 가 진입한다면 role 에는 PRIMARY 가 담긴다.
         String role = attributes.stream().filter(attr -> attr.getAttribute().startsWith(PREFIX))
             .map(attr -> attr.getAttribute().substring(PREFIX.length()))
-            .findFirst().get();
+            .findFirst().orElseGet(() -> null);
+
+        
 
         // 만약 ROLE_ + PRIMARY 가 있다면 접근 허용
-        if (authentication.getAuthorities().stream().filter(auth -> auth.getAuthority().equals("ROLE_"+ role.toUpperCase()))
+        if (role != null && authentication.getAuthorities().stream().filter(auth -> auth.getAuthority().equals("ROLE_"+ role.toUpperCase()))
         .findAny().isPresent()) {
             return ACCESS_GRANTED; // 
         }

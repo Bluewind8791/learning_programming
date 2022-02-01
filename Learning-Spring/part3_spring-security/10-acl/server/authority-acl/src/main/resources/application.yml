@@ -1,0 +1,30 @@
+server:
+  port: 9059
+
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/acldemo2?serverTimezone=Asia/Seoul
+    jdbc-url: jdbc:mysql://localhost:3306/acldemo2?serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true # 실행쿼리를 가독성있게 표현
+
+  output:
+    ansi:
+      enabled: always

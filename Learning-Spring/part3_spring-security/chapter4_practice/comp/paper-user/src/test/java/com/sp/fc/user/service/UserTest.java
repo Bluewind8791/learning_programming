@@ -61,6 +61,7 @@ public class UserTest extends WithUserTest {
         User user = userTestHelper.createUser(school, "user1", Authority.ROLE_STUDENT); // student 권한의 user1 을 만들고
         userService.addAuthority(user.getUserId(), Authority.ROLE_TEACHER); // teacher 권한을 추가
         User savedUser = userService.findUser(user.getUserId()).get(); // find user
+        
         UserTestHelper.assertUser(school, savedUser, "user1", Authority.ROLE_STUDENT, Authority.ROLE_TEACHER); // 두개의 권한이 있는지 검사
     }
 

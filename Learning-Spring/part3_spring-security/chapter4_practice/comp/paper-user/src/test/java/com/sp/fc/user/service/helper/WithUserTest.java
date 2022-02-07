@@ -13,15 +13,13 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 public class WithUserTest {
     
-    @Autowired
-    protected SchoolRepository schoolRepository;
-    
-    @Autowired
-    protected UserRepository userRepository;
+    @Autowired protected SchoolRepository schoolRepository;
+    @Autowired protected UserRepository userRepository;
 
     protected SchoolService schoolService;
     protected UserService userService;
     protected UserSecurityService userSecurityService;
+
     protected SchoolTestHelper schoolTestHelper;
     protected UserTestHelper userTestHelper;
     protected School school;
@@ -34,6 +32,7 @@ public class WithUserTest {
 
         this.schoolRepository.deleteAll();
         this.userRepository.deleteAll();
+
         this.schoolService = new SchoolService(schoolRepository);
         this.userService = new UserService(schoolRepository, userRepository);
         this.userSecurityService = new UserSecurityService(userRepository);

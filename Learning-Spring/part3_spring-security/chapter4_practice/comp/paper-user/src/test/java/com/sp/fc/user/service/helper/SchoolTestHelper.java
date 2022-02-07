@@ -22,7 +22,7 @@ public class SchoolTestHelper {
     }
 
     public School createSchool(String name, String city){
-        return service.save(makeSchool(name, city)); //
+        return service.save(makeSchool(name, city));
     }
 
     public static void assertSchool(School school, String name, String city) {

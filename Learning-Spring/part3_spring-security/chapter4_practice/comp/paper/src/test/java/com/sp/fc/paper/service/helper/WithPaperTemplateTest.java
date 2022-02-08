@@ -7,20 +7,21 @@ import com.sp.fc.paper.service.PaperTemplateService;
 import com.sp.fc.paper.service.ProblemService;
 import com.sp.fc.user.domain.User;
 import com.sp.fc.user.service.helper.WithUserTest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class WithPaperTemplateTest extends WithUserTest {
-    
-    @Autowired protected PaperTemplateRepository paperTemplateRepository;
-    @Autowired protected ProblemRepository problemRepository;
+
+    @Autowired
+    protected PaperTemplateRepository paperTemplateRepository;
+    @Autowired
+    protected ProblemRepository problemRepository;
 
     protected PaperTemplateService paperTemplateService;
     protected PaperTemplateTestHelper paperTemplateTestHelper;
     protected ProblemService problemService;
     protected User teacher;
 
-    protected void preparePaperTemplate() {
+    protected void preparePaperTemplate(){
         this.problemRepository.deleteAll();
         this.paperTemplateRepository.deleteAll();
         prepareUserServices();
@@ -32,14 +33,9 @@ public class WithPaperTemplateTest extends WithUserTest {
         this.teacher = this.userTestHelper.createTeacher(school, "선생님1");
     }
 
-    protected Problem problem(long paperTemplateId, String content, String answer) {
-        return Problem.builder()
-                    .paperTemplateId(paperTemplateId)
-                    .content(content)
-                    .answer(answer)
-                    .build();
+    protected Problem problem(long ptId, String content, String answer){
+        return Problem.builder().paperTemplateId(ptId)
+                .content(content).answer(answer).build();
     }
-
-
 
 }

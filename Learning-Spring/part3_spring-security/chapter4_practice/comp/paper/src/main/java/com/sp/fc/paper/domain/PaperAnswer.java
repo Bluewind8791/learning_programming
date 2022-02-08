@@ -1,62 +1,48 @@
 package com.sp.fc.paper.domain;
 
-
-
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.AllArgsConstructor;
-
-
 @Data
-@Entity
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "sp_paper_answer")
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name="sp_paper_answer")
 public class PaperAnswer {
 
-    @EmbeddedId // ?
-    private PaperAnswerId id;
-
-    @Data
-    @Embeddable // ?
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PaperAnswerId implements Serializable { // Serializable
-        private Long paperId;
-        private Integer num; // 1-base
-    }
-
-    private Long problemId;
-    private String answer;
-    private boolean correct;
-    private LocalDateTime answerd; // updateable
-
-    // 답안은 한 시험지에 여러개 있다.
-    @JsonIgnore // 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "paperId"))
     Paper paper;
 
-    public Integer num() {
-        return id.getNum();
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Embeddable
+    public static class PaperAnswerId implements Serializable {
+        private Long paperId;
+        private Integer num; // 1-base
     }
 
+    @EmbeddedId
+    private PaperAnswerId id;
 
+    private Long problemId;
+    private String answer;
+    private boolean correct;
+
+    private LocalDateTime answered; // updatable
+
+    public Integer num(){
+        return id.getNum();
+    }
 
 }

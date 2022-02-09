@@ -55,6 +55,7 @@ public class PaperTemplateTest extends WithPaperTemplateTest {
         paperTemplateTestHelper.addProblem(template.getPaperTemplateId(), problem("문제1", "정답1"));
         paperTemplateTestHelper.addProblem(template.getPaperTemplateId(), problem("문제2", "정답2"));
         paperTemplateTestHelper.addProblem(template.getPaperTemplateId(), problem("문제3", "정답3"));
+        
         PaperTemplate paperTemplate = paperTemplateRepository.findAll().get(0);
         paperTemplateService.removeProblem(template.getPaperTemplateId(), paperTemplate.getProblemList().get(1).getProblemId());
 

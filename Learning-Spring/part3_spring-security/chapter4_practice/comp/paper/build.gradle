@@ -8,5 +8,5 @@ dependencies {
     testImplementation("com.h2database:h2")
 
     implementation project(":comp-paper-user")
-    testImplementation project(":comp-paper-user").sourceSets.test.output
+    testImplementation project(":comp-paper-user").sourceSets.test.output // source set의 test된 test class 시에 상속하여 사용
 }

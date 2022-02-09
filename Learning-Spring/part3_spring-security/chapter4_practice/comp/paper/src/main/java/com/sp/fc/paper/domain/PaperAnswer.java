@@ -1,6 +1,5 @@
 package com.sp.fc.paper.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,23 +9,25 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="sp_paper_answer")
 public class PaperAnswer {
 
+    @ManyToOne // 한 시험지에 많은 답안이 있다.
     @JsonIgnore
-    @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "paperId"))
     Paper paper;
 
     @Data
+    @Embeddable
     @NoArgsConstructor
     @AllArgsConstructor
-    @Embeddable
     public static class PaperAnswerId implements Serializable {
         private Long paperId;
         private Integer num; // 1-base
@@ -36,7 +37,9 @@ public class PaperAnswer {
     private PaperAnswerId id;
 
     private Long problemId;
+
     private String answer;
+    
     private boolean correct;
 
     private LocalDateTime answered; // updatable

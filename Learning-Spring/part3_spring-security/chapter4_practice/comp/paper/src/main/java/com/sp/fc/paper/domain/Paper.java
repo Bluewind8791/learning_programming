@@ -1,6 +1,7 @@
 package com.sp.fc.paper.domain;
 
 import com.sp.fc.user.domain.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,10 +16,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="sp_paper")
 public class Paper {
 
@@ -27,6 +28,7 @@ public class Paper {
     private Long paperId;
 
     private Long paperTemplateId;
+
     private String name;
 
     private Long studyUserId;
@@ -34,6 +36,7 @@ public class Paper {
     @Transient
     private User user;
 
+    // 연관관계 주인은 paper answer
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "paper")
     private List<PaperAnswer> paperAnswerList;
 
@@ -56,8 +59,8 @@ public class Paper {
 
     @Transient
     public double getScore(){
-        if(total < 1) return 0;
-        return correct* 100.0 / total;
+        if (total < 1) return 0;
+        return (correct * 100.0 / total);
     }
 
     public void addAnswered() {
@@ -69,7 +72,7 @@ public class Paper {
     }
 
     public Map<Integer, PaperAnswer> answerMap(){
-        if(paperAnswerList == null) return new HashMap<>();
+        if (paperAnswerList == null) return new HashMap<>();
         return paperAnswerList.stream().collect(Collectors.toMap(PaperAnswer::num,
                 Function.identity()));
     }

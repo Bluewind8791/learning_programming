@@ -13,13 +13,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 @DataJpaTest // db의 data를 넣고빼는 테스트 선언
 public class SchoolTest {
-
-    // - 학교를 생성한다.
-    // - 학교 이름을 수정한다.
-    // - 지역 목록을 가져온다.
-    // - 지역으로 학교 목록을 가져온다.
 
     @Autowired // repository 는 datajpatest에서 자동으로 bean 을 만들어줌
     private SchoolRepository schoolRepository;
@@ -35,6 +31,7 @@ public class SchoolTest {
         this.schoolTestHelper = new SchoolTestHelper(this.schoolService); // helper 생성
         school = this.schoolTestHelper.createSchool("테스트 학교", "서울"); // helper 를 통한 학교 생성
     }
+
 
     @DisplayName("1. 학교를 생성한다.")
     @Test

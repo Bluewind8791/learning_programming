@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class WithPaperTemplateTest extends WithUserTest {
 
-    @Autowired
-    protected PaperTemplateRepository paperTemplateRepository;
-    @Autowired
-    protected ProblemRepository problemRepository;
+    @Autowired protected PaperTemplateRepository paperTemplateRepository;
+    @Autowired protected ProblemRepository problemRepository;
 
     protected PaperTemplateService paperTemplateService;
     protected PaperTemplateTestHelper paperTemplateTestHelper;

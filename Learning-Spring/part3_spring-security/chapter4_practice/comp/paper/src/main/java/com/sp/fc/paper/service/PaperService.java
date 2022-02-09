@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class PaperService {
 
     private final UserRepository userRepository;
@@ -32,8 +32,8 @@ public class PaperService {
     private final PaperRepository paperRepository;
     private final PaperAnswerRepository paperAnswerRepository;
 
-    protected Paper save(Paper paper){
-        if(paper.getPaperId() == null){
+    protected Paper save(Paper paper) {
+        if (paper.getPaperId() == null) {
             paper.setCreated(LocalDateTime.now());
         }
         return paperRepository.save(paper);
@@ -41,6 +41,7 @@ public class PaperService {
 
     @Transactional
     public List<Paper> publishPaper(long paperTemplateId, List<Long> studyIdList){
+        // paperTemplateId로 paper template를 가져온 다음
         List<Paper> papers = paperTemplateService.findById(paperTemplateId).map(paperTemplate ->
                 StreamSupport.stream(userRepository.findAllById(studyIdList).spliterator(), false)
                         .map(study -> {
@@ -70,20 +71,20 @@ public class PaperService {
         paperRepository.findById(paperId).ifPresentOrElse(paper->{
             Optional<PaperAnswer> pa = paper.getPaperAnswerList() == null ? Optional.empty() :
                     paper.getPaperAnswerList().stream().filter(a -> a.getId().getNum() == num).findFirst();
-            if(pa.isPresent()){
+            if (pa.isPresent()) {
                 PaperAnswer pAnswer = pa.get();
                 pAnswer.setAnswer(answer);
                 pAnswer.setAnswered(LocalDateTime.now());
                 pAnswer.setProblemId(problemId);
                 paperAnswerRepository.save(pAnswer);
-            }else{
+            } else {
                 PaperAnswer pAnswer = PaperAnswer.builder()
                         .id(new PaperAnswer.PaperAnswerId(paperId, num))
                         .problemId(problemId)
                         .answer(answer)
                         .answered(LocalDateTime.now())
                         .build();
-//                paperAnswerRepository.save(pAnswer);
+                // paperAnswerRepository.save(pAnswer);
                 pAnswer.setPaper(paper);
                 if(paper.getPaperAnswerList() == null) paper.setPaperAnswerList(new ArrayList<>());
                 paper.getPaperAnswerList().add(pAnswer);
@@ -103,7 +104,7 @@ public class PaperService {
         final Paper paper = paperRepository.findById(paperId).orElseThrow(()->new IllegalArgumentException(paperId+" 시험지를 찾을 수 없습니다."));
         final Map<Integer, String> answerSheet = paperTemplateService.getPaperAnswerSheet(paper.getPaperTemplateId());
         paper.setCorrect(0);
-        if(paper.getPaperAnswerList() != null) {
+        if (paper.getPaperAnswerList() != null) {
             paper.getPaperAnswerList().forEach(answer -> {
                 if (answer.getAnswer() != null && answer.getAnswer().equals(answerSheet.get(answer.getId().getNum()))) {
                     answer.setCorrect(true);

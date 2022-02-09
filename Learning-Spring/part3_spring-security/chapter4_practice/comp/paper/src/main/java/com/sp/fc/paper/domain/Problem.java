@@ -9,10 +9,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "sp_problem")
 public class Problem {
 
@@ -20,7 +20,7 @@ public class Problem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long problemId;
 
-    private Long paperTemplateId;
+    private Long paperTemplateId; // PaperTemplate 의 FK
 
     private int indexNum; // 1-based
 

@@ -5,9 +5,9 @@ import com.sp.fc.paper.domain.Paper;
 import com.sp.fc.paper.domain.PaperTemplate;
 import com.sp.fc.paper.repository.PaperAnswerRepository;
 import com.sp.fc.paper.repository.PaperRepository;
-// import com.sp.fc.paper.service.PaperService;
 import com.sp.fc.paper.service.helper.WithPaperTemplateTest;
 import com.sp.fc.user.domain.User;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,24 +18,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- *  시나리오
- *
- *      1) 선생님1, 학습자1, 학습자2
- *      2) 시험지 템플릿을 만든다.
- *
- */
+/*
+* 시나리오
+1) 선생님1, 학습자1, 학습자2
+2) 시험지 템플릿을 만든다.
+*/
 @DisplayName("템플릿을 가지고 학습자들에게 시험지를 낸다.")
 @DataJpaTest
 public class PaperTest extends WithPaperTemplateTest {
 
-    @Autowired
-    private PaperRepository paperRepository;
-    @Autowired
-    private PaperAnswerRepository paperAnswerRepository;
+    @Autowired private PaperRepository paperRepository;
+    @Autowired private PaperAnswerRepository paperAnswerRepository;
 
     private PaperService paperService;
-
     private PaperTemplate paperTemplate;
     private User study1;
     private User study2;
@@ -52,6 +47,7 @@ public class PaperTest extends WithPaperTemplateTest {
         this.study2 = this.userTestHelper.createStudent(school, teacher, "study2", "중1");
 
         this.paperTemplate = this.paperTemplateTestHelper.createPaperTemplate(teacher, "시험지1");
+        
         this.paperTemplateTestHelper.addProblem(paperTemplate.getPaperTemplateId(),
                 problem(paperTemplate.getPaperTemplateId(), "문제1", "답1"));
         this.paperTemplateTestHelper.addProblem(paperTemplate.getPaperTemplateId(),

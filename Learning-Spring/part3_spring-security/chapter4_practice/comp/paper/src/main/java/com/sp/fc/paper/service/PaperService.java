@@ -43,8 +43,9 @@ public class PaperService {
     public List<Paper> publishPaper(long paperTemplateId, List<Long> studyIdList){
         // paperTemplateId로 paper template를 가져온 다음
         List<Paper> papers = paperTemplateService.findById(paperTemplateId).map(paperTemplate ->
+                // user repo 에서 student를 모두 찾아서 하나씩 쪼갠다
                 StreamSupport.stream(userRepository.findAllById(studyIdList).spliterator(), false)
-                        .map(study -> {
+                        .map(study -> { // 시험지를 build 하여 학생의 아이디를 넣고 save
                             Paper paper = Paper.builder()
                                     .paperTemplateId(paperTemplate.getPaperTemplateId())
                                     .name(paperTemplate.getName())
@@ -53,7 +54,7 @@ public class PaperService {
                                     .total(paperTemplate.getTotal())
                                     .build();
                             return save(paper);
-                        }).collect(Collectors.toList())
+                        }).collect(Collectors.toList()) // 다시 list로 collect
         ).orElseThrow(()->new IllegalArgumentException(paperTemplateId+" 시험지 템플릿이 존재하지 않습니다."));
         paperTemplateService.updatePublishedCount(paperTemplateId, papers.size());
         return papers;
@@ -68,17 +69,20 @@ public class PaperService {
 
     @Transactional
     public void answer(Long paperId, Long problemId, int num, String answer){
+        // paper repo에서 시험지를 아이디로 찾고
         paperRepository.findById(paperId).ifPresentOrElse(paper->{
+            // 정답리스트를 가져와서 pa에 대입, null 이라면 빈 객체를 삽입
             Optional<PaperAnswer> pa = paper.getPaperAnswerList() == null ? Optional.empty() :
+                    // answer list 를 가져와서 정답의 아이디가 num과 같은 첫번째를 꺼낸다.
                     paper.getPaperAnswerList().stream().filter(a -> a.getId().getNum() == num).findFirst();
-            if (pa.isPresent()) {
+            if (pa.isPresent()) { // 존재한다면 시험지 정답 setting 후 save
                 PaperAnswer pAnswer = pa.get();
                 pAnswer.setAnswer(answer);
                 pAnswer.setAnswered(LocalDateTime.now());
                 pAnswer.setProblemId(problemId);
                 paperAnswerRepository.save(pAnswer);
             } else {
-                PaperAnswer pAnswer = PaperAnswer.builder()
+                PaperAnswer pAnswer = PaperAnswer.builder() // 존재하지 않는다면 시험지 정답 build 후 save
                         .id(new PaperAnswer.PaperAnswerId(paperId, num))
                         .problemId(problemId)
                         .answer(answer)
@@ -86,10 +90,12 @@ public class PaperService {
                         .build();
                 // paperAnswerRepository.save(pAnswer);
                 pAnswer.setPaper(paper);
-                if(paper.getPaperAnswerList() == null) paper.setPaperAnswerList(new ArrayList<>());
-                paper.getPaperAnswerList().add(pAnswer);
+                if (paper.getPaperAnswerList() == null) { // 시험지의 정답리스트가 없다면 빈 list를 넣고
+                    paper.setPaperAnswerList(new ArrayList<>());
+                }
+                paper.getPaperAnswerList().add(pAnswer); // 시험지의 정답리스트에 정답 추가
                 paper.addAnswered();
-                if(paper.getState() != Paper.PaperState.START){
+                if (paper.getState() != Paper.PaperState.START){
                     paper.setState(Paper.PaperState.START);
                     paper.setStartTime(LocalDateTime.now());
                 }

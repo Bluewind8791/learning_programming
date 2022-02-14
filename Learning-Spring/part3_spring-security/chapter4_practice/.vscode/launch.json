@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-OnlinePaperApplication<server-paper-app>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.sp.fc.web.OnlinePaperApplication",
+            "projectName": "server-paper-app",
+            "args": ""
+        }
+    ]
+}

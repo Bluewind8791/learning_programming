@@ -83,3 +83,59 @@ user.service.SchoolService
   - 2문제 풀고 중간에 제출해 버린다.
   - 문제를 풀지 않고 그냥 제출해 버린다
   - 상태에 따라 시험지가 조회된다
+
+---
+
+## 시험 사이트
+
+- 학생, 선생님, 관리자가 각기 다른 테이블에 관리된다.
+- 로그인 하는 페이지가 별도로 있다.
+- 페이지를 한 서버에 만들 수도 있고, 별도의 서버로 나눌 수도 있다.
+
+### 개발환경 세팅
+
+- IntelliJ 에서 compiler.automake.allow.when.app.running 을 체크하고
+- 설정의 Build project automatically 를 체크하고
+- Run configuration 에서 On 'Update' action 과 On frame deactivation 의 값을 적절하게 수정해 줍니다.
+- application.yml 에서 devtool 의 livereload 기능을 켜줍니다.
+
+### thymeleaf
+
+- 기본 문법
+- 템플릿 이용하는 방법
+- layout 설정하기
+
+
+## 사이트 맵
+
+<img src="https://gitlab.com/jongwons.choi/spring-boot-security-lecture/-/raw/master/images/fig-30-sitemap.png" width="600" style="max-width:600px;width:100%;" />
+
+
+- 메인 화면
+- 로그인 화면
+- 가입 화면
+- 관리자 메인
+  - 학교 리스트
+    - 학교 등록
+  - 선생님 리스트
+  - 학생 리스트
+- 선생님 메인
+  - 학생 리스트
+  - 시험지 리스트
+    - 시험지 생성
+    - 시험지 수정
+    - 시험 결과 보기
+- 학생 메인
+  - 응시할 시험지 리스트
+    - 시험 보기
+  - 결과 시험지 리스트
+    - 시험 결과
+
+---
+
+
+## 참고 사이트
+
+- 옥탑방개발자님의 강의자료 : [GitLab](https://gitlab.com/jongwons.choi/spring-boot-security-lecture/-/blob/master/part3/Lec-2%20%EC%9B%B9%20%ED%8E%98%EC%9D%B4%EC%A7%80%20%EC%A0%9C%EC%9E%91%EA%B3%BC%20%EA%B8%B0%EB%8A%A5%ED%85%8C%EC%8A%A4%ED%8A%B8.md)
+- https://velog.io/@bread_dd/Spring-Boot-Devtools
+- http://progtrend.blogspot.com/2019/05/thymeleaf.html

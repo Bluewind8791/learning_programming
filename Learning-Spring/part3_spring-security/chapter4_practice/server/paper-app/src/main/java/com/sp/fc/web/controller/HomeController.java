@@ -27,6 +27,11 @@ public class HomeController {
         return "redirect:/"+site;
     }
 
+    @GetMapping("/signup")
+    public String signUp(@RequestParam String site) {
+        return "redirect:/"+site+"/signup";
+    }
+
 
 
 }

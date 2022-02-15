@@ -27,6 +27,14 @@ spring:
     check-template-location: true
     suffix: .html
 
+  output:
+    ansi:
+      enabled: always # console color
+
 #  web:
 #    resources:
 #      static-locations:
+
+logging:
+  level: 
+    org.springframework.web: trace # controller 가 제대로 서버에 뜨고잇는지 로그 확인

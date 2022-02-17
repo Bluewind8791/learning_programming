@@ -2,6 +2,9 @@ package com.sp.fc.user.service;
 
 import com.sp.fc.user.domain.School;
 import com.sp.fc.user.repository.SchoolRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +44,23 @@ public class SchoolService {
     public List<School> findAllByCity(String city) {
         return schoolRepository.findAllByCity(city);
     }
+
+    public Optional<School> findSchool(Long schoolId) {
+        return schoolRepository.findById(schoolId);
+    }
+
+    public Page<School> list(int pageNum, int size) {
+        return schoolRepository.findAllByOrderByCreatedDesc(PageRequest.of(pageNum-1, size));
+    }
+
+    public List<School> getSchoolList(String city) {
+        return schoolRepository.findAllByCity(city);
+    }
+
+    public long count() {
+        return schoolRepository.count();
+    }
+
+
 
 }

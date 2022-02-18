@@ -1,4 +1,4 @@
-package com.sp.fc.site.teacher.controller.vo;
+package com.sp.fc.site.controller.vo;
 
 
 import lombok.Data;

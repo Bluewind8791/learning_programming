@@ -4,6 +4,7 @@ import com.sp.fc.user.domain.School;
 import com.sp.fc.user.service.SchoolService;
 import com.sp.fc.user.service.UserService;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,12 @@ public class SchoolMngController {
         Model model
     ) {
         model.addAttribute("menu", "school");
+        Page<School> schoolList = schoolService.list(pageNum, size);
+        schoolList.getContent().stream().forEach(school -> {
+            school.setTeacherCount(userService.countTeacher(school.getSchoolId()));
+            school.setStudyCount(userService.countStudent(school.getSchoolId()));
+        });
+        model.addAttribute("page", schoolList);
         return "manager/school/list.html";
     }
 
@@ -38,7 +45,11 @@ public class SchoolMngController {
         Model model
     ) {
         model.addAttribute("menu", "school");
-        model.addAttribute("school", School.builder().build());
+        if (schoolId != null) {
+            model.addAttribute("school", schoolService.findSchool(schoolId).get());
+        } else {
+            model.addAttribute("school", School.builder().build());
+        }
         return "manager/school/edit.html";
     }
 

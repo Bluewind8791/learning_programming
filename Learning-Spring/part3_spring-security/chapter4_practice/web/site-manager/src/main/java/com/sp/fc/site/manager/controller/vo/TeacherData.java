@@ -1,4 +1,4 @@
-package com.sp.fc.site.teacher.controller.vo;
+package com.sp.fc.site.manager.controller.vo;
 
 
 import lombok.Data;
@@ -11,12 +11,12 @@ import lombok.AllArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherSignUpForm {
-    
-    private Long schoolId;
+public class TeacherData {
+
+    private String schoolName;
+    private Long userId;
     private String name;
     private String email;
-    private String password;
-    private String rePassword;
-    
+    private long studentCount;
+
 }

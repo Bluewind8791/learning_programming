@@ -152,7 +152,7 @@ public class TeacherController {
             @AuthenticationPrincipal User user, Model model) {
         List<User> studyList = userService.findTeacherStudentList(user.getUserId());
         paperService.publishPaper(paperTemplateId, studyList.stream().map(u -> u.getUserId()).collect(Collectors.toList()));
-        return "redirect:/teacher/paperTemplate/list.html";
+        return "redirect:/teacher/paperTemplate/list";
     }
 
 

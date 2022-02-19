@@ -55,8 +55,8 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
                 config.rememberMeServices(rememberMeServices());
             })
             .addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling(exception -> {
-                exception.accessDeniedPage("/access-denied");
+            .exceptionHandling(exception -> { 
+                exception.accessDeniedPage("/access-denied"); // exception 발생시 이 페이지로 이동
             })
             .authorizeRequests(request -> 
                 request
@@ -64,7 +64,7 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/login").permitAll()
                         .antMatchers("/error").permitAll()
                         .antMatchers("/signup/*").permitAll()
-                        .antMatchers("/study/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT")
+                        .antMatchers("/study/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT") // admin이나 student 모두 접근 가능
                         .antMatchers("/teacher/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_TEACHER")
                         .antMatchers("/manager/**").hasAnyAuthority("ROLE_ADMIN")
             );

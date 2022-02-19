@@ -133,6 +133,82 @@ user.service.SchoolService
 
 ---
 
+## 보안 취약점 보완
+
+1. 관리자는 학생들의 시험지 결과를 조회할 수 있어야 한다.
+
+2. 학생은 다른 학생의 시험지를 응시할 수도, 조회할 수도 없어야 한다.
+
+```java
+@PostAuthorize("returnObject.isEmpty() || returnObject.get().studyUserId == principal.userId")
+@Transactional(readOnly = true)
+public Optional<Paper> findPaper(Long paperId) {
+    return paperRepository.findById(paperId).map(paper -> {
+        paper.setUser(userRepository.getOne(paper.getStudyUserId()));
+        return paper; // user 정보까지 같이 return
+    });
+}
+```
+
+3. 선생님은 다른 선생님이 만든 시험지의 결과를 조회할 수 없어야 한다.
+
+```java
+@GetMapping("/study/results")
+public String studyResults(
+        @RequestParam Long paperTemplateId,
+        @AuthenticationPrincipal User user,
+        Model model) {
+    model.addAttribute("menu", "paper");
+
+    List<Paper> papers = paperService.getPapers(paperTemplateId);
+    Map<Long, User> userMap = userService.getUsers(papers.stream().map(p -> p.getStudyUserId()).collect(Collectors.toList()));
+    papers.stream().forEach(paper -> paper.setUser(userMap.get(paper.getStudyUserId())));
+    model.addAttribute("template", paperTemplateService.findById(paperTemplateId).get());
+    model.addAttribute("papers", papers);
+    return "/teacher/study/results.html";
+}
+```
+
+시험지의 결과를 아래와 같이 변경한다.
+
+```java
+@GetMapping("/study/results")
+public String studyResults(
+        @RequestParam Long paperTemplateId,
+        @AuthenticationPrincipal User user,
+        Model model) {
+    model.addAttribute("menu", "paper");
+
+    return paperTemplateService.findProblemTemplate(paperTemplateId).map(paperTemplate -> {
+        List<Paper> papers = paperService.getPapers(paperTemplateId);
+        Map<Long, User> userMap = userService.getUsers(papers.stream().map(p -> p.getStudyUserId()).collect(Collectors.toList()));
+        papers.stream().forEach(paper -> paper.setUser(userMap.get(paper.getStudyUserId())));
+        model.addAttribute("template", paperTemplateService.findById(paperTemplateId).get());
+        model.addAttribute("papers", papers);
+        return "/teacher/study/results.html";
+    }).orElseThrow(() -> new AccessDeniedException("시험지가 존재하지 않습니다."));
+}
+```
+
+PaperTemplateService의 findProblemTemplate 메소드에는 PostAuthorize를 추가하여 권한을 확인한다.
+
+```java
+@Transactional(readOnly = true)
+@PostAuthorize("returnObject.isEmpty() || returnObject.get().userId == principal.userId")
+public Optional<PaperTemplate> findProblemTemplate(Long paperTemplateId) {
+    return paperTemplateRepository.findById(paperTemplateId).map(pt->{
+        if (pt.getProblemList().size() != pt.getTotal()) { // lazy 해결위해 체크
+            pt.setTotal(pt.getProblemList().size()); // total size 가 다르다면 total을 맞춤
+        }
+        return pt;
+    });
+}
+```
+
+4. remember-me 취약성 해결 : TokenBasedRememberMe 토큰 대신 PersistentTokenBasedRememberMeServices 로 바꿔보자.
+
+
+---
 
 ## 참고 사이트
 

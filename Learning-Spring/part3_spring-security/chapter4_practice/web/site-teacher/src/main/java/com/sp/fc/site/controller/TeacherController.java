@@ -39,8 +39,8 @@ public class TeacherController {
 
     @GetMapping({"", "/"})
     public String index(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("studentCount", 1); // 학생 수
-        model.addAttribute("paperTemplateCount", 1); // 문제지 수
+        model.addAttribute("studentCount", userService.findTeacherStudentCount(user.getUserId())); // 학생 수
+        model.addAttribute("paperTemplateCount", paperTemplateService.countByUserId(user.getUserId())); // 문제지 수
         return "/teacher/index";
     }
 
@@ -76,6 +76,7 @@ public class TeacherController {
             return "/teacher/study/results.html";
         }).orElseThrow(() -> new AccessDeniedException("시험지가 존재하지 않습니다."));
     }
+
 
     @GetMapping("/paperTemplate/list")
     public String paperTemplateList(

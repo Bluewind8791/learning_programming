@@ -3,11 +3,15 @@ package com.sp.fc.paper.service;
 import com.sp.fc.paper.domain.PaperTemplate;
 import com.sp.fc.paper.domain.Problem;
 import com.sp.fc.paper.repository.PaperTemplateRepository;
+import com.sp.fc.user.domain.Authority;
+import com.sp.fc.user.domain.User;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,11 +91,19 @@ public class PaperTemplateService {
         problemService.updateProblem(problemId, content, answer);
     }
 
+    // @PostAuthorize("returnObject.isEmpty() || returnObject.get().userId == principal.userId")
     @Transactional(readOnly = true)
     public Optional<PaperTemplate> findProblemTemplate(Long paperTemplateId) {
         return paperTemplateRepository.findById(paperTemplateId).map(pt->{
             if (pt.getProblemList().size() != pt.getTotal()) { // lazy 해결위해 체크
                 pt.setTotal(pt.getProblemList().size()); // total size 가 다르다면 total을 맞춤
+            }
+            // 만약 user id 가 security context holder 의 user id 와 같지 않고
+            if (pt.getUserId() != ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId()) {
+                // admin 권한이 없다면
+                if (!((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities().contains(Authority.ADMIN_AUTHORITY) ) {
+                    throw new AccessDeniedException("권한이 없습니다.");
+                }
             }
             return pt;
         });

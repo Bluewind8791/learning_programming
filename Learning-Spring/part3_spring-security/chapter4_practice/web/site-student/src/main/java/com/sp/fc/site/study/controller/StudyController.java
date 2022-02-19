@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping(value = "/study")
+@RequiredArgsConstructor
 public class StudyController {
 
     @Autowired private PaperTemplateService paperTemplateService;
@@ -31,10 +34,10 @@ public class StudyController {
 
     @RequestMapping({"", "/"})
     public String index(@AuthenticationPrincipal User user, Model model) {
-        //학생수와 문제지 수
-        model.addAttribute("paperCount", paperService.countPapersByUserIng(user.getUserId()));
-        model.addAttribute("resultCount", paperService.countPapersByUserResult(user.getUserId()));
-        return "/study/index";
+
+        model.addAttribute("paperCount", paperService.countPapersByUserIng(user.getUserId())); // 학생수
+        model.addAttribute("resultCount", paperService.countPapersByUserResult(user.getUserId())); // 문제지 수
+        return "/study/index.html";
     }
 
     // 시험지 리스트
@@ -88,7 +91,7 @@ public class StudyController {
         } else {
             model.addAttribute("alldone", true);
         }
-        return "/study/paper/apply";
+        return "/study/paper/apply.html";
     }
 
 
@@ -101,7 +104,7 @@ public class StudyController {
     public String answer(Answer answer, @AuthenticationPrincipal User user, Model model){
 
         paperService.answer(answer.getPaperId(), answer.getProblemId(), answer.getIndexNum(), answer.getAnswer());
-        return "redirect:/study/paper/apply.html?paperId="+answer.getPaperId();
+        return "redirect:/study/paper/apply?paperId="+answer.getPaperId();
     }
 
     // 시험 완료

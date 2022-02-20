@@ -1,5 +1,7 @@
 package com.sp.fc.web.config;
 
+import javax.sql.DataSource;
+
 import com.sp.fc.user.service.UserSecurityService;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -12,9 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,11 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserSecurityService userSecurityService;
+    private final DataSource dataSource;
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -36,6 +36,12 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
             .userDetailsService(userSecurityService)
             .passwordEncoder(passwordEncoder())
         ;
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
@@ -51,8 +57,11 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
             .logout(logout -> {
                 logout.logoutSuccessUrl("/");
             })
-            .rememberMe(config -> {
-                config.rememberMeServices(rememberMeServices());
+            .rememberMe(remember -> {
+                // remember.rememberMeParameter("remember-me");
+                // remember.key("paper-site-remember-me");
+                remember.tokenRepository(tokenRepository());
+                remember.rememberMeServices(rememberMeServices());
             })
             .addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(exception -> { 
@@ -70,23 +79,50 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
             );
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring()
-                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
 
+    @Bean // Persistent token based 로 교체
+    public PersistentTokenBasedRememberMeServices rememberMeServices() {
 
-    private RememberMeServices rememberMeServices() {
-        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices(
-            "paper-site-remember-me", // key
-            userSecurityService // user details service
+        PersistentTokenBasedRememberMeServices rememberMeService = new PersistentTokenBasedRememberMeServices(
+            "paper-site-remember-me", 
+            userSecurityService, 
+            tokenRepository()
         );
-        rememberMeServices.setParameter("remember-me");
-        rememberMeServices.setAlwaysRemember(true);
-        rememberMeServices.setTokenValiditySeconds(60*60); // token 유효기간 1시간
-        return rememberMeServices;
+        rememberMeService.setParameter("remember-me");
+        rememberMeService.setAlwaysRemember(true);
+        rememberMeService.setTokenValiditySeconds(60*60);
+        return rememberMeService;
     }
+
+    @Bean // persistent token repo 생성
+    public PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl repositoryImpl = new JdbcTokenRepositoryImpl();
+        repositoryImpl.setDataSource(dataSource);
+        try {
+            repositoryImpl.removeUserTokens("1");
+        } catch (Exception ex) {
+            repositoryImpl.setCreateTableOnStartup(true); // createTableOnStartup
+        }
+        return repositoryImpl;
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
+
+    // private RememberMeServices rememberMeServices() {
+    //     TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices(
+    //         "paper-site-remember-me", // key
+    //         userSecurityService // user details service
+    //     );
+    //     rememberMeServices.setParameter("remember-me");
+    //     rememberMeServices.setAlwaysRemember(true);
+    //     rememberMeServices.setTokenValiditySeconds(60*60); // token 유효기간 1시간
+    //     return rememberMeServices;
+    // }
 
 
 }

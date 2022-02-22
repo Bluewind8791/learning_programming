@@ -58,8 +58,6 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
                 logout.logoutSuccessUrl("/");
             })
             .rememberMe(remember -> {
-                // remember.rememberMeParameter("remember-me");
-                // remember.key("paper-site-remember-me");
                 remember.tokenRepository(tokenRepository());
                 remember.rememberMeServices(rememberMeServices());
             })
@@ -89,8 +87,8 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
             tokenRepository()
         );
         rememberMeService.setParameter("remember-me");
-        rememberMeService.setAlwaysRemember(true);
         rememberMeService.setTokenValiditySeconds(60*60);
+        rememberMeService.setAlwaysRemember(false);
         return rememberMeService;
     }
 

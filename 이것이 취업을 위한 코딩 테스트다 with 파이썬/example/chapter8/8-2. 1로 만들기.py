@@ -8,6 +8,31 @@
 # 이 연산 4개를 적절히 사용하여 1을 만들려고 한다
 # 최소 수행 값은 얼마인가
 
+# +++ answer +++
+
+# x = int(input())
+x = 6
+
+# DP table
+d = [0] * 30001
+
+# dynamic programming - bottom-up
+for i in range(2, x + 1):
+    # 현재 수에서 1을 빼는 경우
+    d[i] = d[i - 1] + 1
+
+    # 2로 나누어 떨어지는 경우
+    if i // 2 == 0:
+        d[i] = min(d[i // 2] + 1, d[i])
+    # 3으로 나누어 떨어지는 경우
+    if i // 3 == 0:
+        d[i] = min(d[i // 3] + 1, d[i])
+    # 5로 나누어 떨어지는 경우
+    if i // 5 == 0:
+        d[i] = min(d[i // 5] + 1, d[i])
+
+print(d[x])
+
 """
 x = 6
 # (1 <= x <= 30000)
@@ -37,28 +62,3 @@ def makeOne(x):
 result = 0
 makeOne(6)
 """
-
-# +++ answer +++
-
-# x = int(input())
-x = 6
-
-# DP table
-d = [0] * 30001
-
-# dynamic programming - bottom-up
-for i in range(2, x + 1):
-    # 현재 수에서 1을 빼는 경우
-    d[i] = d[i - 1] + 1
-
-    # 2로 나누어 떨어지는 경우
-    if i // 2 == 0:
-        d[i] = min(d[i // 2] + 1, d[i])
-    # 3으로 나누어 떨어지는 경우
-    if i // 3 == 0:
-        d[i] = min(d[i // 3] + 1, d[i])
-    # 5로 나누어 떨어지는 경우
-    if i // 5 == 0:
-        d[i] = min(d[i // 5] + 1, d[i])
-
-print(d[x])

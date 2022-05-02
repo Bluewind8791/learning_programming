@@ -1,8 +1,18 @@
+# 정렬
+
+## 기준에 따라 데이터를 정렬
+
+정렬(Sorting)이란 데이터를 특정 기준에 따라서 순서대로 나열하는것을 말합니다.
+
+```py
 array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
+```
 
-# selection sorting
-# 시간 복잡도 O(N^)
+## selection sorting 
 
+- 시간 복잡도 :O(N^)
+
+```
 for i in range(len(array)):
     min_index = i
     for j in range(i + 1, len(array)):
@@ -13,11 +23,14 @@ for i in range(len(array)):
     array[i], array[min_index] = array[min_index], array[i]
 
 print(array)
+```
 
-# insert sorting
-# 데이터가 거의 정렬되어 있는 상태라면 매우 빠르게 동작
-# 시간 복잡도 O(N^)
+## insert sorting
 
+- 데이터가 거의 정렬되어 있는 상태라면 매우 빠르게 동작
+- 시간 복잡도 O(N^)
+
+```py
 array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
 
 for i in range(1, len(array)):
@@ -29,11 +42,13 @@ for i in range(1, len(array)):
             break
 
 print(array)
+```
 
+## quick sorting
 
-# quick sorting
-# quick sorting 의 시간복잡도는 O(NlogN)
+- 퀵 정렬의 시간복잡도는 O(NlogN) 입니다.
 
+```py
 array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
 
 
@@ -69,10 +84,11 @@ def quick_sort(array, start, end):
 
 quick_sort(array, 0, len(array) - 1)
 print(array)
+```
 
+- 파이썬의 장점을 살린 quick sorting
 
-# - 파이썬의 장점을 살린 quick sorting -
-
+```py
 array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
 
 
@@ -92,13 +108,15 @@ def py_quick_sort(array):
 
 
 print(py_quick_sort(array))
+```
 
+## Count Sorting (계수 정렬)
 
-# - Count Sorting - 계수 정렬
-# 특정한 조건이 부합되어야 사용 가능하지만 매우 빠름
-# 데이터의 크기 범위가 제한되어 정수형태로 표현할 수 있을때 사용가능
-# 시간복잡도 O(N + K)
+- 특정한 조건이 부합되어야 사용 가능하지만 매우 빠름
+- 데이터의 크기 범위가 제한되어 정수형태로 표현할 수 있을 때 사용 가능
+- 시간복잡도 O(N + K)
 
+```py
 array = [7, 5, 9, 0, 3, 1, 6, 2, 9, 1, 4, 8, 0, 5, 2]
 
 # 모든 범위를 포함하는 리스트 선언 (초기값 0)
@@ -111,10 +129,11 @@ for i in range(len(array)):
 for i in range(len(count)):
     for j in range(count[i]):
         print(i, end=" ")
+```
 
+## python sorting
 
-# - python sorting -
-
+```py
 array = [("banana", 2), ("apple", 5), ("carrot", 3)]
 
 
@@ -125,3 +144,4 @@ def setting(data):
 
 result = sorted(array, key=setting)
 print(result)
+```

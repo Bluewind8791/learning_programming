@@ -3,7 +3,7 @@ version: "3" # docker compose 버전
 services: # 하위의 앱들을 모아서 서비스를 구성
   database: # 서비스 이름 지정
     image: mysql # 베이스 이미지 지정
-    container_name: blog-db
+    container_name: spring-db
     security_opt:
       - seccomp:unconfined
     environment: # 환경변수 지정
@@ -15,20 +15,20 @@ services: # 하위의 앱들을 모아서 서비스를 구성
     ports: # 외부 / 내부 포트 지정
       - 3306:3306
     networks: # 지정한 네트워크에 속하게 지정
-      - spring-blog-network
+      - spring-network
 
   application:
     build:
       # Dockerfile이 있는 경로
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     # 컨테이너에 문제가 발생한 경우 재시작 설정
     restart: always
     ports:
       - 80:8080
     depends_on: # 의존성을 추가하여 MySQL이 로드된 이후에 접속 시도.
       - database
-    container_name: blog-app
+    container_name: spring-app
     environment:
       # docker의 컨테이너 안에서는 개별로 ip를 할당받기 때문에
       # ip 대신에 데이터베이스 서비스 이름을 지정
@@ -36,7 +36,7 @@ services: # 하위의 앱들을 모아서 서비스를 구성
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
     networks:
-      - spring-blog-network
+      - spring-network
 
 networks:
-  spring-blog-network:
+  spring-network:

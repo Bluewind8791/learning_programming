@@ -1,0 +1,14 @@
+spring:
+  # datasource:
+  #   driver-class-name: com.mysql.cj.jdbc.Driver
+  #   url: jdbc:mysql://localhost:3306/demo?serverTimezone=Asia/Seoul
+  #   username: root
+  #   password: 1234
+
+  jpa:
+    show-sql: true # console 창에 sql문이 보이게 한다.
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate.format_sql: true # sql문이 보기좋게 출력되게 한다.

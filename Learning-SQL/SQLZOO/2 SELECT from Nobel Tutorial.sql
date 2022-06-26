@@ -61,23 +61,3 @@ ORDER BY
 	else 0
 	end, 
 		subject, winner;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

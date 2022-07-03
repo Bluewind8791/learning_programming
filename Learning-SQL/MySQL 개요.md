@@ -68,28 +68,26 @@ DBMS에 대한 대략적인 내용과 MySQL에 대해서 알아봅니다.
 ![](https://velog.velcdn.com/images/bluewind8791/post/55b541e6-2345-443f-81cb-58cc0e2dd63a/image.png)
 
 
-# MySQL 전체 운영 실습
+# 테이블 외의 DB 개체의 활용
 
-## 테이블 외의 DB 개체의 활용
+## Index
 
-### Index
-- 데이터베이스 '튜닝'의 개념
-  - DB 성능 향상
-  - 쿼리에 응답한느 시간 단축
-- 책 뒤에 붙어있는 '색인'과 같은 개념
-- 데이터의 양이 많을수록 효과적으로 작용
-- 테이블의 열 단위에 생성
+- 쿼리에 응답하는 시간을 단축하여 DB의 성능 향상을 기대할 수 있습니다.
+- 책 뒤에 붙어있는 '색인'과 비슷한 개념으로 볼 수 있습니다. 즉 색인화 되어있는 인덱스 파일을 검색하여 검색속도를 빠르게 합니다.
+- 데이터의 양이 많을수록 효과적으로 작용합니다.
+- 보통 `SELECT` 쿼리의 `WHERE`절이나 `JOIN` 예약어를 사용했을때 사용되며 `INSERT`, `UPDATE`, `DELETE` 쿼리에는 해당사항이 없습니다.
 
-### View
-- 가상의 테이블
-- 보안상의 이유로 사용
-- 실제 행 데이터를 가지고 있지 않으며, 실제 테이블에 링크된 개념
-- 뷰를 `SELECT` 시에 실제 테이블의 데이터를 조회하는 것과 동일한 결과
+
+## View
+
+- 가상의 테이블로써 보안상의 이유로 주로 사용됩니다.
+- 실제 행 데이터를 가지고 있지 않으며, 실제 테이블에 링크된 개념으로 볼 수 있습니다.
+- 뷰를 `SELECT` 시에 실제 테이블의 데이터를 조회하는 것과 동일한 결과가 도출됩니다.
 
 ```sql
 CREATE VIEW uv_memberTBL 
 AS
-	SELECT memberName, memberAddress FROM userTBL ;
+	SELECT memberName, memberAddress FROM userTBL;
 
 SELECT * FROM uv_memberTBL ;
 
@@ -100,14 +98,15 @@ select * from information_schema.views where table_schema='shopping_db';
 ```
 
 
-### Stored Procedure
-- MySQL에서 제공해주는 프로그래밍 기능
-- SQL문을 하나로 묶어 편리하게 사용하는 기능
-- 다른 프로그래밍 언어와 같은 기능을 담당할 수도 있다.
-- 실질적으로 DB 개발자가 주로 하는 것.
-- `SELECT`문을 매번 하나하나 실행하는것이 아니라 스토어드 프로시저로 만들어 놓은 후 호출하면 간단하다.
+## Stored Procedure
+
+- MySQL에서 제공해주는 프로그래밍 기능입니다.
+- SQL문을 하나로 묶어 편리하게 사용할 수 있습니다.
+- 다른 프로그래밍 언어와 같은 기능을 담당할 수도 있습니다.
+- `SELECT`문을 매번 하나하나 실행하는것이 아니라 스토어드 프로시저로 만들어 놓은 후 호출하면 간단하게 사용할 수 있습니다.
 
 ```sql
+-- example
 SELECT * FROM userTBL WHERE memberName = '당탕이';
 SELECT * FROM productTBL WHERE productName = '냉장고';
 
@@ -123,8 +122,8 @@ CALL myProc() ;
 ```
 
 
-### Trigger
-- 테이블에 부착되어 테이블에 `INSERT`나 `UPDATE` 또는 `DELETE` 작업이 발생되면 실행되는 코드.
+## Trigger
+- 테이블에 부착되어 테이블에 `INSERT`나 `UPDATE` 또는 `DELETE` 작업이 발생되면 실행되는 코드입니다.
 
 
 
@@ -138,8 +137,7 @@ CALL myProc() ;
 
 
 ※ 데이터베이스 모델링
-- 현실에서 사용되는 데이터를 어떻게 
-  테이블에 올려 놓을 것인지 결정하는 과정.
+- 현실에서 사용되는 데이터를 어떻게 테이블에 올려 놓을 것인지 결정하는 과정.
 
 
 

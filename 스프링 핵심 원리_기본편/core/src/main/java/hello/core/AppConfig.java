@@ -18,7 +18,9 @@ public class AppConfig {
 
     // DiscountPolicy 연결
     private DiscountPolicy getDiscountPolicy() {
-        return new FixDiscountPolicy();
+//        return new FixDiscountPolicy();
+        // 정률 할인정책으로 변경
+        return new RateDiscountPolicy();
     }
 
     // MemberService DI

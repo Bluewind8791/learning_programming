@@ -12,7 +12,7 @@ public class SingletonService {
     // new 로 객체 생성 private으로 막아버림
     private SingletonService() {}
 
-    public void logic() {
-        System.out.println("싱글톤 객체 로직 호출");
-    }
+//    public void logic() {
+//        System.out.println("싱글톤 객체 로직 호출");
+//    }
 }

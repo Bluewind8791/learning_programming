@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.time.format.TextStyle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,8 +1,8 @@
 package hello.core;
 
 import hello.core.discount.DiscountPolicy;
-import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
+import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
@@ -17,13 +17,14 @@ public class AppConfig {
 
     // MemberRepository 연결
     @Bean
-    public MemoryMemberRepository getMemberRepository() {
+    public MemberRepository memberRepository() {
+        System.out.println("called AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
     // DiscountPolicy 연결
     @Bean
-    public DiscountPolicy getDiscountPolicy() {
+    public DiscountPolicy discountPolicy() {
 //        return new FixDiscountPolicy();
         // 정률 할인정책으로 변경
         return new RateDiscountPolicy();
@@ -32,13 +33,15 @@ public class AppConfig {
     // MemberService DI
     @Bean
     public MemberService memberService() {
-        return new MemberServiceImpl(getMemberRepository());
+        System.out.println("called AppConfig.memberService");
+        return new MemberServiceImpl(memberRepository());
     }
 
     // OrderService DI
     @Bean
     public OrderService orderService() {
-        return new OrderServiceImpl(getMemberRepository(), getDiscountPolicy());
+        System.out.println("called AppConfig.orderService");
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
 }

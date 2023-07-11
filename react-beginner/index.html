@@ -1,0 +1,45 @@
+<html>
+<head>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<!-- React Library -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<!-- for JSX using Babel -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    const root = document.getElementById("root");
+    // making element and make property and fill content
+    // const text = React.createElement("h3", {
+    //     onMouseEnter: () => console.log("mouse enter!")
+    // }, "Hello, I am span!");
+    // const btn = React.createElement("button", {
+    //         onClick: () => console.log("clicked!")
+    //     }, "Click me");
+    // const container = React.createElement("div", null, [title, btn]);
+
+    // using JSX
+    const Title = () => (
+        <h3 id="title" onMouseEnter={() => console.log("mouse enter!")}>
+            Hello, I am title
+        </h3>
+    );
+    const Btn = () => (
+        <button onClick={() => console.log("clicked!")}>
+            Click me
+        </button>
+    );
+
+    const Container = (
+        <div>
+            <Title />
+            <Btn />
+        </div>
+    );
+
+    // Rendering elements at root
+    ReactDOM.render(Container, root);
+</script>
+</html>

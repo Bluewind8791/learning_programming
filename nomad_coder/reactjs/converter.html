@@ -10,20 +10,20 @@
 <!-- for JSX using Babel -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-    function App() {
+    function MinuteToHour() {
         const [amount, setAmount] = React.useState();
-        const [flipped, setFlipped] = React.useState(false);
+        const [inverted, setInverted] = React.useState(false);
         const onChange = (event) => {
             setAmount(event.target.value);
         }
         const reset = () => setAmount(0);
         const onFlip = () => {
             reset();
-            setFlipped(current => !current);
+            setInverted(current => !current);
         }
         return (
             <div>
-                <h1>Super Converter</h1>
+                <h3>Minute 2 Hour</h3>
                 <div>
                     <label htmlFor="minute" >Minute</label>
                     <input
@@ -31,8 +31,8 @@
                         type="number"
                         placeholder="Minutes"
                         onChange={onChange}
-                        disabled={flipped}
-                        value={flipped ? amount * 60 : amount}
+                        disabled={inverted}
+                        value={inverted ? amount * 60 : amount}
                     />
                 </div>
                 <div>
@@ -42,12 +42,75 @@
                         type="number"
                         placeholder="Hours"
                         onChange={onChange}
-                        disabled={!flipped}
-                        value={flipped ? amount : Math.round(amount / 60)}
+                        disabled={!inverted}
+                        value={inverted ? amount : Math.round(amount / 60)}
                     />
                 </div>
                 <button onClick={reset}>Reset</button>
-                <button onClick={onFlip}>Flip</button>
+                <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
+            </div>
+        );
+    }
+    function KmToMile() {
+        const [amount, setAmount] = React.useState();
+        const [inverted, setInverted] = React.useState(false);
+        function reset() {
+            setAmount(0);
+        }
+        function onchange(event) {
+            setAmount(event.target.value);
+        }
+        function invert() {
+            reset();
+            setInverted(!inverted);
+        }
+        return (
+            <div>
+                <h3>KM 2 M</h3>
+                <div>
+                    <label htmlFor="km">Km</label>
+                    <input
+                        id="km"
+                        type="number"
+                        placeholder="Kilometers"
+                        disabled={inverted}
+                        value={inverted ? amount * 1.60934 : amount}
+                        onChange={onchange}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="mile">Mile</label>
+                    <input
+                        id="mile"
+                        type="number"
+                        placeholder="miles"
+                        disabled={!inverted}
+                        value={inverted ? amount : amount * 0.621371}
+                        onChange={onchange}
+                    />
+                </div>
+                <div>
+                    <button id="reset" onClick={reset}>Reset</button>
+                    <button id="invert" onClick={invert}>Invert</button>
+                </div>
+            </div>
+        );
+    }
+    function App() {
+        const [index, setIndex] = React.useState("-1");
+        const onSelect = (event) => {
+            setIndex(event.target.value);
+        }
+        return (
+            <div>
+                <h1>Super Converter</h1>
+                <select value={index} onChange={onSelect}>
+                    <option value="-1">Select your units</option>
+                    <option value="0">Minutes & Hours</option>
+                    <option value="1">Km & Miles</option>
+                </select>
+                {index === "0" ? <MinuteToHour /> : null}
+                {index === "1" ? <KmToMile /> : null}
             </div>
         );
     }

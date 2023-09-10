@@ -1,5 +1,6 @@
 <html>
 <head>
+    <title>#4.0 Props</title>
 </head>
 <body>
     <div id="root"></div>
@@ -10,36 +11,36 @@
 <!-- for JSX using Babel -->
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
+    function Btn({text, changeValue}) {
+        return (
+            <button
+                onClick={changeValue}
+                style={{
+                    backgroundColor: "tomato",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: 0,
+                    borderRadius: 10,
+                }}
+            >
+                {text}
+            </button>
+        );
+    }
+    // 리액트 메모 기능을 사용하면, 버튼의 props가 변경되지 않는 컴포넌트는 re-rendering 되지 않는다.
+    const MemorizedBtn = React.memo(Btn);
+    function App() {
+        const [value, setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Revert Changes");
+        return (
+            <div>
+                <MemorizedBtn text={value} changeValue={changeValue} />
+                <MemorizedBtn text={value} />
+            </div>
+        );
+    }
+
     const root = document.getElementById("root");
-    // making element and make property and fill content
-    // const text = React.createElement("h3", {
-    //     onMouseEnter: () => console.log("mouse enter!")
-    // }, "Hello, I am span!");
-    // const btn = React.createElement("button", {
-    //         onClick: () => console.log("clicked!")
-    //     }, "Click me");
-    // const container = React.createElement("div", null, [title, btn]);
-
-    // using JSX
-    const Title = () => (
-        <h3 id="title" onMouseEnter={() => console.log("mouse enter!")}>
-            Hello, I am title
-        </h3>
-    );
-    const Btn = () => (
-        <button onClick={() => console.log("clicked!")}>
-            Click me
-        </button>
-    );
-
-    const Container = (
-        <div>
-            <Title />
-            <Btn />
-        </div>
-    );
-
-    // Rendering elements at root
-    ReactDOM.render(Container, root);
+    ReactDOM.render(<App />, root);
 </script>
 </html>

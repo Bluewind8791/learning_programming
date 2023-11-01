@@ -1,5 +1,5 @@
 import {
-  Alert,
+  Alert, Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,6 +15,7 @@ import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { theme } from './colors';
+import { literalDefine } from './literalDefine';
 
 
 const STORAGE_KEY = "@toDos";
@@ -77,7 +78,9 @@ export default function App() {
 
   async function loadToDos() {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
-    setToDos(JSON.parse(s));
+    if (s) {
+      setToDos(JSON.parse(s));
+    }
   }
 
   function deleteTodo(id) {
@@ -85,19 +88,27 @@ export default function App() {
     const btnOK = {
       text: "OK",
       style: "destructive", // only for IOS
-      onPress: () => {
-        // 직접적으로 state를 컨트롤하지 않고 ...을 통하여 새로운 object를 생성
-        const newTodos = {...toDos};
-        delete newTodos[id];
-        setToDos(newTodos);
-        saveToDos(newTodos).then();
-      }
+      onPress: () => removeToDo(id)
     };
-    Alert.alert(
-        "Delete To Do",
-        "Are you sure delete this To Do?",
-        [btnCancle, btnOK]
-    );
+    if (Platform.OS === "web") {
+      if (confirm(literalDefine.MSG_CONFIRM_DEL_TODO)) {
+        removeToDo(id);
+      }
+    } else {
+      Alert.alert(
+          "Delete To Do",
+          literalDefine.MSG_CONFIRM_DEL_TODO,
+          [btnCancle, btnOK]
+      );
+    }
+  }
+
+  function removeToDo(id) {
+    // 직접적으로 state를 컨트롤하지 않고 ...을 통하여 새로운 object를 생성
+    const newTodos = {...toDos};
+    delete newTodos[id];
+    setToDos(newTodos);
+    saveToDos(newTodos).then();
   }
 
   function switchDone(id) {
@@ -161,60 +172,58 @@ export default function App() {
           style={styles.input}
       />
       <ScrollView>
-        {toDos ? (
-            Object.keys(toDos).map(key => (
-                // 활성중인 탭에 따른 리스트 표시
-                toDos[key].working === working ? (
-                  toDos[key].isEditing ? (
-                      <View key={key} style={{...styles.toDo, backgroundColor: "white"}}>
-                        <TextInput
-                            keyboardType="default"
-                            returnKeyType="done"
-                            onChangeText={(payload) => setEditText(payload)}
-                            onSubmitEditing={() => saveEditText(key)}
-                            onBlur={() => setIsEditing(key, false)}
-                            placeholder={toDos[key].text}
-                            multiline={false}
-                            style={styles.editInput}
-                        />
-                        <TouchableOpacity onPress={() => saveEditText(key)} style={styles.editIcon} >
-                          <Feather name="check" size={15} color="black" />
+        {Object.keys(toDos).map(key => (
+            // 활성중인 탭에 따른 리스트 표시
+            toDos[key].working === working ? (
+                toDos[key].isEditing ? (
+                    <View key={key} style={{...styles.toDo, backgroundColor: "white"}}>
+                      <TextInput
+                          keyboardType="default"
+                          returnKeyType="done"
+                          onChangeText={(payload) => setEditText(payload)}
+                          onSubmitEditing={() => saveEditText(key)}
+                          onBlur={() => setIsEditing(key, false)}
+                          placeholder={toDos[key].text}
+                          multiline={false}
+                          style={styles.editInput}
+                      />
+                      <TouchableOpacity onPress={() => saveEditText(key)} style={styles.editIcon}>
+                        <Feather name="check" size={15} color="black"/>
+                      </TouchableOpacity>
+                    </View>
+                ) : (
+                    <View key={key} style={styles.toDo}>
+                      <View style={styles.toDoLeftBox}>
+                        <TouchableOpacity onPress={() => switchDone(key)}>
+                          {toDos[key].isDone ? (
+                              <Fontisto name={"checkbox-active"} size={15} color="grey"/>
+                          ) : (
+                              <Fontisto name={"checkbox-passive"} size={15} color={theme.grey}/>
+                          )}
+                        </TouchableOpacity>
+                        <Text
+                            onPress={() => setIsEditing(key, true)}
+                            style={{
+                              ...styles.toDoText,
+                              color: toDos[key].isDone ? theme.grey : "white",
+                              textDecorationLine: toDos[key].isDone ? "line-through" : "none",
+                            }}
+                        >
+                          {toDos[key].text}
+                        </Text>
+                      </View>
+                      <View style={styles.toDoIconBox}>
+                        <TouchableOpacity onPress={() => setIsEditing(key, true)}>
+                          <Feather name="edit" size={15} color={theme.grey}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => deleteTodo(key)}>
+                          <Fontisto name="trash" size={15} color={theme.grey}/>
                         </TouchableOpacity>
                       </View>
-                  ) : (
-                      <View key={key} style={styles.toDo}>
-                        <View style={styles.toDoLeftBox}>
-                          <TouchableOpacity onPress={() => switchDone(key)}>
-                            {toDos[key].isDone ? (
-                                <Fontisto name={"checkbox-active"} size={15} color="grey"/>
-                            ) : (
-                                <Fontisto name={"checkbox-passive"} size={15} color={theme.grey}/>
-                            )}
-                          </TouchableOpacity>
-                          <Text
-                              onPress={() => setIsEditing(key, true)}
-                              style={{
-                                ...styles.toDoText,
-                                color: toDos[key].isDone ? theme.grey : "white",
-                                textDecorationLine: toDos[key].isDone ? "line-through" : "none",
-                              }}
-                          >
-                            {toDos[key].text}
-                          </Text>
-                        </View>
-                        <View style={styles.toDoIconBox}>
-                          <TouchableOpacity onPress={() => setIsEditing(key, true)}>
-                            <Feather name="edit" size={15} color={theme.grey}/>
-                          </TouchableOpacity>
-                          <TouchableOpacity onPress={() => deleteTodo(key)}>
-                            <Fontisto name="trash" size={15} color={theme.grey}/>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                  )
-                ) : null) // end of is working
-            ) // end of map
-        ) : null}
+                    </View>
+                )
+            ) : null // end of is working
+        ))}
       </ScrollView>
     </View>
   );

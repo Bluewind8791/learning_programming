@@ -15,7 +15,7 @@ import { Fontisto } from '@expo/vector-icons';
 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const WEATHER_API_KEY = '618335e9dadc22acfc9975918330b8fb';
+const WEATHER_API_KEY = 'donttakemyapikey';
 const icons = {
   "Clouds" : "cloudy",
   "Clear" : "day-sunny",

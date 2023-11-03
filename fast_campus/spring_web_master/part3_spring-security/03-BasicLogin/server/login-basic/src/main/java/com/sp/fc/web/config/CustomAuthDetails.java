@@ -8,6 +8,9 @@ import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * 인증객체 내의 details 추가
+ */
 @Component
 public class CustomAuthDetails implements AuthenticationDetailsSource<HttpServletRequest, RequestInfo> {
     

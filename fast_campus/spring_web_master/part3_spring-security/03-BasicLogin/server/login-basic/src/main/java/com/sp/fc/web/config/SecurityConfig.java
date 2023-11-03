@@ -1,5 +1,6 @@
 package com.sp.fc.web.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -13,16 +14,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 
 
+@RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
-@EnableGlobalMethodSecurity(prePostEnabled = true) // 설정되어있던 role대로 admin 페이지를 볼수가없게된다.
+@EnableGlobalMethodSecurity(prePostEnabled = true) // role 적용
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomAuthDetails customAuthDetails;
 
-    public SecurityConfig(CustomAuthDetails customAuthDetails) {
-        this.customAuthDetails = customAuthDetails;
-    }
-
+    /**
+     * only for test
+     * @param auth the {@link AuthenticationManagerBuilder} to use
+     * @throws Exception
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth
@@ -32,7 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .username("user1")
                 .password("1111")
                 .roles("USER")
-        ).withUser(
+        )
+        .withUser(
             User.withDefaultPasswordEncoder()
                 .username("admin")
                 .password("2222")
@@ -40,8 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
+    /**
+     * ROLE 계층 설정
+     * @return
+     */
     @Bean
     RoleHierarchy roleHierarchy() {
+        // ROLE_ADMIN의 권한은 ROLE_USER의 권한을 포함한다
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
         roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
         return roleHierarchy;
@@ -50,29 +59,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests(request->{
-                request
-                    .antMatchers("/").permitAll() // root page permit all
-                    .anyRequest().authenticated() // need auth
-                    ;
-            })
-            .formLogin(
-                login -> login.loginPage("/login")
-                .permitAll() // 무한루프 방지
-                .defaultSuccessUrl("/", false) // 로그인에 성공했을때
-                .failureUrl("/login-error") // 로그인 실패했을때 이 url으로 이동
+            .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login").permitAll() // 무한루프 방지
+                .defaultSuccessUrl("/", false)
+                .failureUrl("/login-error")
                 .authenticationDetailsSource(customAuthDetails)
-            )
-            .logout(logout -> logout.logoutSuccessUrl("/"))
-            .exceptionHandling(exception -> exception.accessDeniedPage("/access-denied"))
-            ;
+                .and()
+            .logout()
+                .logoutSuccessUrl("/")
+                .and()
+            .exceptionHandling()
+                .accessDeniedPage("/access-denied")
+        ;
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+        // resources/static의 하위 디렉토리를 web resource로 설정하여 시큐리티 ignore
         web.ignoring()
-            .requestMatchers(
-                PathRequest.toStaticResources().atCommonLocations()
-            );
+                .requestMatchers(
+                        PathRequest.toStaticResources().atCommonLocations()
+                );
     }
 }

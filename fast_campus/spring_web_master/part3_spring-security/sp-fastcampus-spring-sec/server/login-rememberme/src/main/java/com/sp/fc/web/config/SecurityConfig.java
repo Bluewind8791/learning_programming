@@ -26,6 +26,8 @@ import java.time.LocalDateTime;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    RememberMeAuthenticationFilter rememberMeAuthenticationFilter;
+
     private final SpUserService spUserService;
     private final DataSource dataSource;
 
@@ -51,6 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return roleHierarchy;
     }
 
+    /**
+     * 세션 만료 여부
+     * @return
+     */
     @Bean
     public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
         return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher(){
@@ -78,9 +84,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     PersistentTokenRepository tokenRepository(){
         JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
         repository.setDataSource(dataSource);
-        try{
+        try {
             repository.removeUserTokens("1");
-        }catch(Exception ex){
+        } catch(Exception ex) {
             repository.setCreateTableOnStartup(true);
         }
         return repository;
@@ -88,12 +94,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PersistentTokenBasedRememberMeServices rememberMeServices(){
-        PersistentTokenBasedRememberMeServices service =
-                new PersistentTokenBasedRememberMeServices("hello",
-                        spUserService,
-                        tokenRepository()
-                        );
-        return service;
+        return new PersistentTokenBasedRememberMeServices(
+                "hello",
+                spUserService,
+                tokenRepository()
+        );
     }
 
     @Override
@@ -105,20 +110,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .formLogin(login->
                         login.loginPage("/login")
-                        .loginProcessingUrl("/loginprocess")
-                        .permitAll()
+                        .loginProcessingUrl("/loginprocess").permitAll()
                         .defaultSuccessUrl("/", false)
                         .failureUrl("/login-error")
                 )
-                .logout(logout->
-                        logout.logoutSuccessUrl("/"))
-                .exceptionHandling(error->
-                        error.accessDeniedPage("/access-denied")
-                )
-                .rememberMe(r->r
-                        .rememberMeServices(rememberMeServices())
-                )
-                ;
+                .logout(logout -> logout.logoutSuccessUrl("/"))
+                .exceptionHandling(error -> error.accessDeniedPage("/access-denied"))
+                .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
+        ;
     }
 
     @Override

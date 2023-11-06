@@ -1,6 +1,8 @@
 package com.sp.fc.web.controller;
 
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,13 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
-
 @Controller
 public class HomeController {
 
     @GetMapping("/")
-    public String index(Model model, HttpSession session) {
+    public String index(Model model, HttpSession session){
         model.addAttribute("sessionId", session.getId());
         return "index";
     }

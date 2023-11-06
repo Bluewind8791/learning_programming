@@ -31,7 +31,7 @@ subprojects {
     }
 
     configurations {
-        developmentOnly
+//        developmentOnly
         runtimeClasspath {
             extendsFrom developmentOnly
         }

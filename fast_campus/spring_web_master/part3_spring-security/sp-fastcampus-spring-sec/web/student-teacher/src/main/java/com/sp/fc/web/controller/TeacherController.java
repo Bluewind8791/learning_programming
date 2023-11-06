@@ -2,6 +2,7 @@ package com.sp.fc.web.controller;
 
 import com.sp.fc.web.student.StudentManager;
 import com.sp.fc.web.teacher.Teacher;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,13 +19,10 @@ public class TeacherController {
     @Autowired
     private StudentManager studentManager;
 
-
     @PreAuthorize("hasAnyAuthority('ROLE_TEACHER')")
     @GetMapping("/main")
     public String main(@AuthenticationPrincipal Teacher teacher, Model model){
-        model.addAttribute("studentList", studentManager.myStudents(teacher.getId()));
+        model.addAttribute("studentList", studentManager.myStudentList(teacher.getId()));
         return "TeacherMain";
     }
-
-
 }

@@ -18,7 +18,7 @@ public class WebIntegrationTest {
     public URI uri(String path) {
         try {
             return new URI(format("http://localhost:%d%s", port, path));
-        }catch(Exception ex){
+        } catch (Exception ex) {
             throw new IllegalArgumentException();
         }
     }

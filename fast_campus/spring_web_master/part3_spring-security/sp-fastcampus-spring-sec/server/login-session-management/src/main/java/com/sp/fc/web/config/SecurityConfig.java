@@ -113,15 +113,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     PersistentTokenBasedRememberMeServices rememberMeServices(){
         PersistentTokenBasedRememberMeServices service =
-                new PersistentTokenBasedRememberMeServices(
-                        "hello",
-                        spUserService,
-                        tokenRepository()
-                ) {
+                new PersistentTokenBasedRememberMeServices("hello", spUserService, tokenRepository()) {
                     @Override
                     protected Authentication createSuccessfulAuthentication(HttpServletRequest request, UserDetails user) {
                         return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
-//                        return super.createSuccessfulAuthentication(request, user);
                     }
                 };
         service.setAlwaysRemember(true); // 항상 remember me 처리

@@ -2,7 +2,7 @@
 
 ## AOP : Aspect Oriented Programming
 
-- 스프링의 철학 중에 DI(의존성 주입)이 있다. DI 를 통해 약한 상관성(Lossely coupled)을 설계할 수 있고 모듈화를 완성할 수 있다.
+- 스프링의 철학 중에 DI(의존성 주입)이 있다. DI를 통해 약한 상관성(Lossely coupled)을 설계할 수 있고 모듈화를 완성할 수 있다.
 - DI 와 함께 매우 중요한 철학이 '관심사의 분리' 이다. 코드를 스파게티로 묶지말고 관심이 있는 코드들을 따로 관리하는 것.
 - 관심사 분리가 가능한 이유는 AOP의 기술이 있기에 가능하다.
 
@@ -16,8 +16,8 @@
   - 기타...
 
 - Weaving
-  - bean 과 bean 을 Proxy 로 감싸서 연결해주는 작업
-  - bean 과 bean 의 호출사이에 PointCut 을 적용해서 JoinPont 를 판별한 다음 PointCut 을 요청한 advice 를 JoinPoint 에 적용해 준다.
+  - bean과 bean을 Proxy로 감싸서 연결해주는 작업.
+  - bean과 bean의 호출사이에 PointCut 을 적용해서 JoinPont 를 판별한 다음 PointCut 을 요청한 advice 를 JoinPoint 에 적용해 준다.
 
 - PointCut : JoinPoint 를 만들어내는 칼
   - JoinPoint 를 지적해주는 expression
@@ -61,11 +61,11 @@
 - 접근하려고 하는 상황에서 체크해야 할 내용은 무엇인가?
   - SecurityMetadataSource, ConfigAuttribute
   - 정적인 경우와 동적인 경우
-  - AccessDecisionVoter 가 vote 해준다.
+  - AccessDecisionVoter가 vote 해준다.
 
 - 여러가지 판단 결과가 나왔을 때, 취합은 어떤 방식으로 할 것인가?
   - AccessDecisionManager : 권한 의원회
-    - AffirmativeBased : 긍정 위원회
+    - AffirmativeBased : 긍정 위원회 (한표라도 긍정이라면 패스)
     - ConsensusBased : 다수결 의원회
     - UnanimouseBased : 만장일치 의원회
 

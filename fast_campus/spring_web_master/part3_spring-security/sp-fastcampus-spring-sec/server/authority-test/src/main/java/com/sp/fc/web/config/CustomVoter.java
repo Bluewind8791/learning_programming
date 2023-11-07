@@ -7,13 +7,18 @@ import org.springframework.security.core.Authentication;
 
 import java.util.Collection;
 
+/**
+ * Custom voter
+ */
 public class CustomVoter implements AccessDecisionVoter<MethodInvocation> {
 
     private final String PREFIX = "SCHOOL_";
 
     @Override
     public boolean supports(ConfigAttribute attribute) {
-        return attribute.getAttribute().startsWith(PREFIX);
+        // 모든 조건에 참여
+        return true;
+//        return attribute.getAttribute().startsWith(PREFIX);
     }
 
     @Override
@@ -23,14 +28,17 @@ public class CustomVoter implements AccessDecisionVoter<MethodInvocation> {
 
     @Override
     public int vote(Authentication authentication, MethodInvocation object, Collection<ConfigAttribute> attributes) {
-        String role = attributes.stream().filter(attr->attr.getAttribute().startsWith(PREFIX))
-                .map(attr->attr.getAttribute().substring(PREFIX.length()))
-                .findFirst().orElseGet(()->null);
-        if(role !=null && authentication.getAuthorities().stream().filter(auth->auth.getAuthority().equals("ROLE_"+role.toUpperCase()))
-        .findAny().isPresent()) {
-            return ACCESS_GRANTED;
-        }
-        return ACCESS_DENIED;
+        // 무조건 GRANTED
+        return ACCESS_GRANTED;
+
+//        String role = attributes.stream().filter(attr->attr.getAttribute().startsWith(PREFIX))
+//                .map(attr->attr.getAttribute().substring(PREFIX.length()))
+//                .findFirst().orElseGet(()->null);
+//        if(role !=null && authentication.getAuthorities().stream().filter(auth->auth.getAuthority().equals("ROLE_"+role.toUpperCase()))
+//        .findAny().isPresent()) {
+//            return ACCESS_GRANTED;
+//        }
+//        return ACCESS_DENIED;
     }
 
 }

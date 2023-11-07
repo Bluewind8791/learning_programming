@@ -44,21 +44,17 @@ public class AclGlobalMethodConfig extends GlobalMethodSecurityConfiguration {
 
     @Bean
     public PermissionEvaluator aclPermissionEvaluator() {
-        AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(
-                aclService()
-        );
-
-        return permissionEvaluator;
+        return new AclPermissionEvaluator(aclService());
     }
 
     @Bean
     public AclService aclService() {
-        JdbcMutableAclService aclService = new JdbcMutableAclService(
+        // mutable : 변경 가능한
+        return new JdbcMutableAclService(
                 dataSource(),
                 lookupStrategy(),
                 aclCache()
         );
-        return aclService;
     }
 
     @Bean
@@ -72,8 +68,7 @@ public class AclGlobalMethodConfig extends GlobalMethodSecurityConfiguration {
 
     @Bean
     public EhCacheManagerFactoryBean ehcacheFactoryBean() {
-        EhCacheManagerFactoryBean factoryBean = new EhCacheManagerFactoryBean();
-        return factoryBean;
+        return new EhCacheManagerFactoryBean();
     }
 
     @Bean
@@ -97,6 +92,7 @@ public class AclGlobalMethodConfig extends GlobalMethodSecurityConfiguration {
 
     @Bean
     LookupStrategy lookupStrategy() {
+        // DB 조회 전략
         return new BasicLookupStrategy(
                 dataSource(),
                 aclCache(),

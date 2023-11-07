@@ -8,21 +8,24 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ResourceBundle;
 
-//@Configuration
-//@EnableCaching
+
+/**
+ * EHCache를 사용하는 캐시 설정
+ */
+@Configuration
+@EnableCaching
 public class CacheConfig {
 
-//    @Bean
-//    public EhCacheCacheManager cacheManager(){
-//        EhCacheCacheManager cacheManager = new EhCacheCacheManager();
-//        cacheManager.setCacheManager(ehcacheFactoryBean().getObject());
-//        return cacheManager;
-//    }
-//
-//    @Bean
-//    public EhCacheManagerFactoryBean ehcacheFactoryBean() {
-//        EhCacheManagerFactoryBean factoryBean = new EhCacheManagerFactoryBean();
-//        return factoryBean;
-//    }
+    @Bean
+    public EhCacheCacheManager cacheManager(){
+        EhCacheCacheManager cacheManager = new EhCacheCacheManager();
+        cacheManager.setCacheManager(ehcacheFactoryBean().getObject());
+        return cacheManager;
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean ehcacheFactoryBean() {
+        return new EhCacheManagerFactoryBean();
+    }
 
 }

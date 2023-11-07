@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 public class Paper {
 
@@ -20,7 +20,6 @@ public class Paper {
     private Long id;
     private String title;
     private String tutorId;
-//    private List<String> studentIds;
     private State state;
 
     public static enum State {

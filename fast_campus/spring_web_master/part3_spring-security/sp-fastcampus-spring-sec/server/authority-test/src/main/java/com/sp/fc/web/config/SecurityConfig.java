@@ -1,6 +1,7 @@
 package com.sp.fc.web.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -12,13 +13,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.FilterInvocation;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 import java.util.Collection;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final NameCheck nameCheck;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,10 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                     .and()
                 .authorizeRequests()
-                    .mvcMatchers("/greeting/{name}").hasRole("USER")
+                    .mvcMatchers("/greeting/{name}")
+//                        .hasRole("USER")
+                        .access("@nameCheck.check(#name)") // 특정 이름만 허가하도록
                     .anyRequest().authenticated()
 //                    .accessDecisionManager(filterAccessDecisionManager()) // .mvcMatchers("/greeting/{name}").hasRole("ADMIN") 뚫기
-//                    .access("@nameCheck.check(#name)")
         ;
     }
 

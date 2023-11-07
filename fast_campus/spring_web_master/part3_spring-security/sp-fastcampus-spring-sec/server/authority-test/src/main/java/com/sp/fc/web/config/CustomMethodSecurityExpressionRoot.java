@@ -7,7 +7,6 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.access.expression.WebSecurityExpressionRoot;
 
 @Getter
 @Setter
@@ -25,18 +24,18 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
     private Object returnObject;
 
     public boolean isStudent(){
-        return getAuthentication().getAuthorities().stream()
-                .filter(a->a.getAuthority().equals("ROLE_STUDENT"))
-                .findAny().isPresent();
+        return getAuthentication().getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_STUDENT"));
     }
 
     public boolean isTutor(){
-        return getAuthentication().getAuthorities().stream()
-                .filter(a->a.getAuthority().equals("ROLE_TUTOR"))
-                .findAny().isPresent();
+        return getAuthentication().getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_TUTOR"));
     }
 
-    public boolean notPrepareSate(Paper paper){
+    public boolean notPrepareState(Paper paper){
         return paper.getState() != com.sp.fc.web.service.Paper.State.PREPARE;
     }
 

@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,21 +16,17 @@ public class PaperService implements InitializingBean {
 
     private HashMap<Long, Paper> paperDB = new HashMap<>();
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-
-    }
-
     public void setPaper(Paper paper){
         paperDB.put(paper.getPaperId(), paper);
     }
 
-    @PostFilter("notPrepareSate(filterObject)")
+    @PostFilter("notPrepareState(filterObject)")
     public List<Paper> getMyPapers(String username) {
 //        return paperDB.values().stream().collect(Collectors.toList());
-        return paperDB.values().stream().filter(
-                paper -> paper.getStudentIds().contains(username)
-        ).collect(Collectors.toList());
+        return paperDB.values()
+                .stream()
+                .filter(paper -> paper.getStudentIds().contains(username))
+                .collect(Collectors.toList());
     }
 
 
@@ -39,6 +36,12 @@ public class PaperService implements InitializingBean {
 
     @Secured({"ROLE_PRIMARY", "ROLE_RUN_AS_PRIMARY"})
     public List<Paper> getAllPapers() {
-        return paperDB.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(paperDB.values());
+    }
+
+
+    // after bean initializing
+    @Override
+    public void afterPropertiesSet() throws Exception {
     }
 }

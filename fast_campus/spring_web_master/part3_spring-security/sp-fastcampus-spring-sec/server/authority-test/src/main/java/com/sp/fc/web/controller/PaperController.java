@@ -4,6 +4,7 @@ package com.sp.fc.web.controller;
 import com.sp.fc.web.config.CustomSecurityTag;
 import com.sp.fc.web.service.Paper;
 import com.sp.fc.web.service.PaperService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -18,17 +19,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/paper")
 @RestController
+@RequestMapping("/paper")
+@RequiredArgsConstructor
 public class PaperController {
 
-    @Autowired
-    private PaperService paperService;
+    private final PaperService paperService;
 
 //    @PreAuthorize("isStudent()")
+    @PostFilter("notPrepareState(filterObject) && filterObject.studentIds.contains(#user.username)")
     @GetMapping("/mypapers")
     public List<Paper> myPapers(@AuthenticationPrincipal User user){
         return paperService.getMyPapers(user.getUsername());
+    }
+
+//    @PreAuthorize("hasPermission(#paperId, 'paper', 'read')")
+    @PostAuthorize("returnObject.studentIds.contains(principal.username)")
+    @GetMapping("/get/{paperId}")
+    public Paper getPaper(@AuthenticationPrincipal User user, @PathVariable Long paperId){
+        return paperService.getPaper(paperId);
     }
 
     @Secured({"ROLE_USER", "RUN_AS_PRIMARY"})
@@ -41,13 +50,6 @@ public class PaperController {
     @GetMapping("/getPapersByPrimary")
     public List<Paper> getPapersByPrimary(@AuthenticationPrincipal User user){
         return paperService.getAllPapers();
-    }
-
-//    @PreAuthorize("hasPermission(#paperId, 'paper', 'read')")
-    @PostAuthorize("returnObject.studentIds.contains(principal.username)")
-    @GetMapping("/get/{paperId}")
-    public Paper getPaper(@AuthenticationPrincipal User user, @PathVariable Long paperId){
-        return paperService.getPaper(paperId);
     }
 
 }

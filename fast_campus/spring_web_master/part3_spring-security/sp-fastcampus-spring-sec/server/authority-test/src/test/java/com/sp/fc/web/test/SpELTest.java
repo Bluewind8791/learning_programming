@@ -46,15 +46,21 @@ class Horse {
 public class SpELTest {
 
     ExpressionParser parser = new SpelExpressionParser();
-    Person person = Person.builder()
-            .name("홍길동").height(178).build();
 
-    Horse nancy = Horse.builder().name("nancy").height(160).build();
+    Person person = Person.builder()
+            .name("홍길동")
+            .height(178)
+            .build();
+
+    Horse nancy = Horse.builder()
+            .name("nancy")
+            .height(160)
+            .build();
 
     @DisplayName("4. Context 테스트 ")
     @Test
     void test_4() {
-
+        // Bean 테스트
         StandardEvaluationContext ctx = new StandardEvaluationContext();
         ctx.setBeanResolver(new BeanResolver() {
             @Override
@@ -65,42 +71,38 @@ public class SpELTest {
         ctx.setRootObject(person);
         ctx.setVariable("horse", nancy);
 
-        assertTrue(parser.parseExpression("over(170)").getValue(ctx,
-                Boolean.class));
-
-        assertFalse(parser.parseExpression("#horse.over(170)").getValue(ctx,
-                Boolean.class));
-
-        assertTrue(parser.parseExpression("@person.over(170)").getValue(ctx,
-                Boolean.class));
-        assertFalse(parser.parseExpression("@nancy.over(170)").getValue(ctx,
-                Boolean.class));
+        // "#" prefix로 변수에 접근
+        assertEquals(Boolean.FALSE, parser.parseExpression("#horse.over(170)").getValue(ctx, Boolean.class));
+        // set Root Object
+        assertEquals(Boolean.TRUE, parser.parseExpression("over(170)").getValue(ctx, Boolean.class));
+        // "@" prefix로 bean에 접근
+        assertEquals(Boolean.TRUE, parser.parseExpression("@person.over(170)").getValue(ctx, Boolean.class));
+        assertEquals(Boolean.FALSE, parser.parseExpression("@nancy.over(170)").getValue(ctx, Boolean.class));
 
     }
 
     @DisplayName("3. 메소드 호출")
     @Test
     void test_3() {
-        assertTrue(parser.parseExpression("over(170)").getValue(person,
-                Boolean.class));
-        assertFalse(parser.parseExpression("over(170)").getValue(nancy,
-                Boolean.class));
+        // Person 객체의 over() 메서드를 호출
+        assertEquals(Boolean.TRUE, parser.parseExpression("over(170)").getValue(person, Boolean.class));
+        assertEquals(Boolean.FALSE, parser.parseExpression("over(170)").getValue(nancy, Boolean.class));
     }
 
 
     @DisplayName("2. 값 변경")
     @Test
     void test_2() {
-        parser.parseExpression("name").setValue(person, "호나우드");
-        assertEquals("호나우드", parser.parseExpression("name")
-                .getValue(person, String.class));
+        String testName = "테스트명";
+        parser.parseExpression("name").setValue(person, testName);
+
+        assertEquals(testName, parser.parseExpression("name").getValue(person, String.class));
     }
 
     @DisplayName("1. 기본 테스트 ")
     @Test
     void test_1(){
-        assertEquals("홍길동", parser.parseExpression("name")
-                .getValue(person, String.class));
+        assertEquals("홍길동", parser.parseExpression("name").getValue(person, String.class));
     }
 
 

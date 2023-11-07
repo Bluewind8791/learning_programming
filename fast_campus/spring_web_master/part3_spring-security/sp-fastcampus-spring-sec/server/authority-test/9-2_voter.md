@@ -1,13 +1,14 @@
 # 권한 처리
 
-- 권한은 기본적으로 AccessDecisionManager 를 구현하여 처리할 수 있다. 
-- 하지만 기존에 잘 구현된 소스들을 사용하려면 voter 기반의 AccessDecisionManager 를 사용하는것이 좋다. 
+- 권한은 기본적으로 `AccessDecisionManager`를 구현하여 처리할 수 있다. 
+- 하지만 기존에 잘 구현된 소스들을 사용하려면 voter 기반의 `AccessDecisionManager`를 사용하는 것이 좋다. 
 - 기존의 구현체는 아래의 3가지가 있다.
+  - AccessDecisionManager : 권한 의원회
+    - AffirmativeBased : 긍정 의원회
+    - ConsensusBased : 다수결 의원회
+    - UnanimouseBased : 만장일치 의원회
 
-- AccessDecisionManager : 권한 의원회
-  - AffirmativeBased : 긍정 의원회
-  - ConsensusBased : 다수결 의원회
-  - UnanimouseBased : 만장일치 의원회
+> 최근에는 voter를 잘 사용하지 않는 추세이나, spring의 기본 개념이 voter기반으로 잡혀있다.
 
 각각의 기능은 각 클래스의 `decide()` 메소드를 보면 확인 가능하다.
 

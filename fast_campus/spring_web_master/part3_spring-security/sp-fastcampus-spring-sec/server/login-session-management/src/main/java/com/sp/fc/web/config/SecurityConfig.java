@@ -95,8 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     SessionRegistry sessionRegistry(){
-        SessionRegistryImpl registry = new SessionRegistryImpl();
-        return registry;
+        return new SessionRegistryImpl();
     }
 
     @Bean
@@ -114,56 +113,60 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     PersistentTokenBasedRememberMeServices rememberMeServices(){
         PersistentTokenBasedRememberMeServices service =
-                new PersistentTokenBasedRememberMeServices("hello",
+                new PersistentTokenBasedRememberMeServices(
+                        "hello",
                         spUserService,
                         tokenRepository()
-                        ){
+                ) {
                     @Override
                     protected Authentication createSuccessfulAuthentication(HttpServletRequest request, UserDetails user) {
                         return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), null);
 //                        return super.createSuccessfulAuthentication(request, user);
                     }
                 };
-        service.setAlwaysRemember(true);
+        service.setAlwaysRemember(true); // 항상 remember me 처리
         return service;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(request->
-                    request
-                            .antMatchers("/", "/error").permitAll()
-                            .antMatchers("/admin/**").hasRole("ADMIN")
-                            .anyRequest().authenticated()
-                )
-                .formLogin(login->
-                        login.loginPage("/login")
-                        .loginProcessingUrl("/loginprocess")
-                        .permitAll()
-                        .defaultSuccessUrl("/", false)
-                        .failureUrl("/login-error")
-                )
-                .logout(logout->
-                        logout.logoutSuccessUrl("/"))
-                .exceptionHandling(error->
-                        error
-//                                .accessDeniedPage("/access-denied")
-                                .accessDeniedHandler(new CustomDeniedHandler())
-                                .authenticationEntryPoint(new CustomEntryPoint())
-
-                )
-                .rememberMe(r->r
-                        .rememberMeServices(rememberMeServices())
-                )
-                .sessionManagement(
-                        s->s
-//                                .sessionCreationPolicy(p-> SessionCreationPolicy.S)
-                                .sessionFixation(sessionFixationConfigurer -> sessionFixationConfigurer.changeSessionId())
-                        .maximumSessions(2)
-                        .maxSessionsPreventsLogin(true)
-                        .expiredUrl("/session-expired")
-                )
+                .authorizeRequests()
+                    .antMatchers("/", "/error").permitAll()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().authenticated()
+                    .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/loginprocess")
+                    .permitAll()
+                    .defaultSuccessUrl("/", false)
+                    .failureUrl("/login-error")
+                    .and()
+                .logout()
+                    .logoutSuccessUrl("/")
+                    .and()
+                .exceptionHandling()
+                    .accessDeniedHandler(new CustomDeniedHandler())
+                    .authenticationEntryPoint(new CustomEntryPoint())
+                    .and()
+                .rememberMe()
+                    .rememberMeServices(rememberMeServices())
+                    .and()
+                .sessionManagement()
+                    .sessionFixation().changeSessionId()
+//                    .sessionFixation().none() // 보안 위함 - 로그인을 해도 세션 아이디가 변경되지않음
+                /*
+                .sessionCreationPolicy(SessionCreationPolicy.?)
+                - ALWAYS : 세션이 없으면 항상 세션 생성
+                - IF_REQUIRED : 필요한 경우 생성
+                - NEVER : 해당 필터 정책안에서는 세션 생성하지 않음
+                - STATELESS : 세션을 절대적으로 사용하지 않음
+                보통은 ALWAYS나 STATELESS로 극단적으로 사용
+                 */
+                    .maximumSessions(2)
+                    .maxSessionsPreventsLogin(true)
+                    .expiredUrl("/session-expired")
                 ;
     }
 

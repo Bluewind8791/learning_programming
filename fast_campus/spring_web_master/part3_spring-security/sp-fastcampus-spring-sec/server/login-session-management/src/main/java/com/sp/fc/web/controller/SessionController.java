@@ -1,6 +1,7 @@
 package com.sp.fc.web.controller;
 
 import com.sp.fc.user.domain.SpUser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
@@ -10,38 +11,58 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@RequiredArgsConstructor
 public class SessionController {
 
-    @Autowired
-    private SessionRegistry sessionRegistry;
+    private final SessionRegistry sessionRegistry;
 
     @GetMapping("/sessions")
     public String sessions(Model model){
-        model.addAttribute("sessionList",
-                sessionRegistry.getAllPrincipals().stream().map(p->UserSession.builder()
-                        .username(((SpUser)p).getUsername())
-                        .sessions(sessionRegistry.getAllSessions(p, false).stream().map(s->
-                                SessionInfo.builder()
-                                        .sessionId(s.getSessionId())
-                                        .time(s.getLastRequest())
-                                        .build())
-                                .collect(Collectors.toList()))
-        .build()).collect(Collectors.toList()));
+        List<UserSession> sessionList =
+                sessionRegistry.getAllPrincipals()
+                        .stream()
+                        .map(principal ->
+                                UserSession.builder()
+                                        .username(((SpUser) principal).getUsername())
+                                        .sessions(
+                                            sessionRegistry.getAllSessions(principal, false)
+                                                .stream()
+                                                .map(session -> SessionInfo.builder()
+                                                        .sessionId(session.getSessionId())
+                                                        .time(session.getLastRequest())
+                                                        .build()
+                                                )
+                                                .collect(Collectors.toList())
+                                        )
+                                        .build()
+                        )
+                        .collect(Collectors.toList());
+        model.addAttribute("sessionList", sessionList);
         return "/sessionList";
     }
 
+    /**
+     * 세션 강제 만료
+     * @param sessionId
+     * @return
+     */
     @PostMapping("/session/expire")
     public String expireSession(@RequestParam String sessionId){
         SessionInformation sessionInformation = sessionRegistry.getSessionInformation(sessionId);
-        if(!sessionInformation.isExpired()){
+        if (!sessionInformation.isExpired()) {
             sessionInformation.expireNow();
         }
         return "redirect:/sessions";
     }
 
+    /**
+     * 세션 만료 시 이동 페이지
+     * @return
+     */
     @GetMapping("/session-expired")
     public String sessionExpired(){
         return "/sessionExpired";

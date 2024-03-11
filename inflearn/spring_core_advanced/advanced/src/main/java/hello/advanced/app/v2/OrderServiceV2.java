@@ -18,7 +18,7 @@ public class OrderServiceV2 {
         TraceStatus status = null;
 
         try {
-            status = trace.beginSync(traceId, "OrderServiceV2.orderItem()");
+            status = trace.beginSync(traceId, "OrderServiceV3.orderItem()");
             orderRepository.save(itemId, traceId); // 기존 로직
             trace.end(status);
         } catch (Exception e) {

@@ -22,11 +22,11 @@ public class TraceId {
         return UUID.randomUUID().toString().substring(0, 8);
     }
 
-    public TraceId createNextId() {
+    public TraceId createIdNextLevel() {
         return new TraceId(id, level + 1);
     }
 
-    public TraceId createPrevId() {
+    public TraceId createIdPrevLevel() {
         return new TraceId(id, level - 1);
     }
 

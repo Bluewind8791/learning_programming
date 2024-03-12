@@ -19,7 +19,7 @@ public class OrderControllerV1 {
         TraceStatus status = null;
 
         try {
-            status = trace.begin("OrderControllerV3.request()");
+            status = trace.begin("OrderController.request()");
             orderService.orderItem(itemId); // 기존 로직
             trace.end(status);
             return "ok";
